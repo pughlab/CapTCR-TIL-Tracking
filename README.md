@@ -15,8 +15,8 @@ The current understanding of the contents, diversity, and changes in the antigen
 This repo contains R scripts and figures used in the analysis for the CapTCR TIL Tracking project.
 
 ## Data Load and Organization
- - **DataLoad.R**: Loads sample order for patients, required libraries, and a maximally distant color pallete
- - **Organization.R**: Loads specific chain, sample cohort, and clone fraction for specific patient's samples
+ - **DataLoad.R**: Loads specific chain, sample cohort, and clone fraction for specific patient's samples
+ - **Organization.R**: Loads sample order for patients, required libraries, and a maximally distant color pallete
  - **ProductiveCloneFraction.R**: Readjusts clone fraction data based on spliced data frame
 ## Quality Control
  - **QCPlots.R**: Uses tabular log dataset from MiXCR to create and bind multiple quality control plots together showing different data points
