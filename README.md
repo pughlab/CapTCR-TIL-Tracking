@@ -38,7 +38,7 @@ This repo contains R scripts and figures used in the analysis for the CapTCR TIL
 
 # System Requirements
 ## Hardware Requirements
-All scripts in this repository wereveloped on a system with the following specs:
+All scripts in this repository were developed on a system with the following specs:
 
 RAM: 8 GB
 CPU: 1.7 GHz Intel Core i7
