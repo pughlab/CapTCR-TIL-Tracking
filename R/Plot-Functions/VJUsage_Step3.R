@@ -9,7 +9,6 @@ library (tidyverse)
 library (ggraph)
 library (igraph)
 library (gridExtra)
-library (randomcoloR)
 library(bioseq)
 
 # Creates VJ usage circle plot from data used in step 1 and 2
