@@ -1,3 +1,7 @@
+###################
+# VJ Usage Step 3 #
+###################
+
 # Code modified from: github.com/pughlab/capTCR_seqAnalysis/blob/main/R/VJCassetteUsage/Step3_aaCDR3perVJ_PackedCirclePlot.R
 
 # Required Libraries:
@@ -8,8 +12,9 @@ library (gridExtra)
 library (randomcoloR)
 library(bioseq)
 
+# Creates VJ usage circle plot from data used in step 1 and 2
 # @param patient: Patient desired for analysis
-# @param sampcohort: Sample cohort desired for analysis
+# @param cohort: Sample cohort desired for analysis
 # @param timepoint_order: Ordering of the samples desired for analysis
 # @param fig_height: Desired height of the figure (for manuscript figure_height equals 1)
 # @param fig_width: Desired width of the figure (for manuscript figure_width equals 1.5x # of samples)
@@ -21,16 +26,16 @@ library(bioseq)
 # @param CDR3_colored_filename: Filename of CDR3 colors dataframe
 # @param CDR3_colors_datapath: Datapath of CDR3 colors dataframe
 
-VJUsage_Step3 <- function(patient, sampcohort, timepoint_order, fig_height, fig_width, fig_path,
+VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_width, fig_path,
                           step1_output_filename, step1_output_datapath, step2_output_filename, step2_output_datapath,
                          CDR3_colored_filename, CDR3_colors_datapath){
     
     #If you have multiple patients and want to arrange the 
     #plots in multiple columns when plotting them side by side, 
     #define the number of columns:
-    #example: if you have 30 patients, you might want to plot them
+    #example: if you have 30 timepoints, you might want to plot them
     #in a 5-row*6-column grid. so, the  number_of_columns <- 6.
-    number_of_columns <- 5
+    number_of_columns <- length(timepoint_order)
 
     #Name of your final figure. This name should end
     #with '.png'. Example: 'ProjectX_Blood.png'
