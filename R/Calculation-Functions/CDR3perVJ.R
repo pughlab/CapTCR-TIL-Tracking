@@ -9,6 +9,7 @@ library (igraph)
 library (gridExtra)
 library (randomcoloR)
 
+# Calculates the CDR3 per VJ at each timepoint for a patient
 # @param patient: Patient desired for analysis
 # @param cohort: Sample cohort desired for analysis
 # @param timepoint_order: Timepoint order desired for analysis
