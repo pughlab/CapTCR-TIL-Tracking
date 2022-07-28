@@ -2,7 +2,7 @@
 # Overlay Abundance and Diversity #
 ###################################
 
-# Plots and tracks the redundant TIL clones
+# Overlays the relative abundance and diversity plots
 # @param patient: specific patient code 
 # @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
