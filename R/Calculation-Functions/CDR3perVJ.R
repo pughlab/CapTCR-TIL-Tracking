@@ -48,5 +48,6 @@ CDR3perVJ <- function(patient, cohort, timepoint_order, step2_output_filename, s
         total_df$AverageCDR3[i] <- AverageCDR3
         i <- i + 1
     }
+    total_df <<- total_df
     print(total_df)
 }
