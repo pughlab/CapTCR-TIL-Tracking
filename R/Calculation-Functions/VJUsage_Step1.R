@@ -7,6 +7,10 @@
 #Required libraries: 
 library(tidyverse)
 
+# Creates excel sheet containing the number of CDR3s for each VJ
+# @param file_path: Path towards TRB clonotype data
+# @param file_path_output: Desired datapath for excel file output
+
 VJUsage_Step1 <- function(file_path, file_path_output){
     # Create file list of TRB Clones MiXCR output while removing the TLDC 1 patient's samples
     file_list <- as.vector(list.files(path = file_path , recursive=TRUE, 
