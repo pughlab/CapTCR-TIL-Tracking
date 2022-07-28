@@ -1,15 +1,15 @@
+###################
+# TCR Convergence #
+###################
+
 # Required Libraries: 
 library (tidyverse)
 library (ggraph)
 library (igraph)
 library (gridExtra)
 library (randomcoloR)
-library(immunarch)
 
-###################
-# TCR Convergence #
-###################
-
+# Calculates the TCR convergence for a specific patient across timepoints
 # @param patient: Patient desired for analysis
 # @param cohort: Sample cohort desired for analysis
 # @param timepoint_order: Timepoint order desired for analysis
@@ -30,10 +30,7 @@ TCRConvergence <- fuction(patient, cohort, timepoint_order, step2_output_filenam
             filter ( Cohort == cohort) %>%
             filter ( cloneCount > 1) %>%
             mutate(VJcombo = gsub("[.]", "_", VJcombo))
-            #mutate ( VJcombo = stringr::str_c(Vcassette ,      #Because the presence of dot'.' symbol is a source of error for ggraph
-                                             #"_" ,             #we need to re-generate VJcombo column, where V and J genes are glued
-                                             #Jcassette) )      #by "_" instead of ".".
-
+            
     # Removing unproductive clones and recomputing the clone fraction
     clonotypes <- clonotypes[-c(grep("[*]", clonotypes$aaSeqCDR3)),]
     clonotypes <- clonotypes[-c(grep("_", clonotypes$aaSeqCDR3)),]
