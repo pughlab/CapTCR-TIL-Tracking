@@ -1,13 +1,10 @@
-# Code modified from: github.com/pughlab/capTCR_seqAnalysis/blob/main/R/VJCassetteUsage/Step2_TRBclonotypes_txtFile_concatenation.R
+###################
+# VJ Usage Step 2 #
+###################
 
-######################################################################
-#Setting the coordination of p_id and cycle in file names.
-#the 4 variables below are integers. The integers are the coordination of where 
-#p_id or cycle start and end in the file name.
-#for example, in 'CLONES_TRBLIB-14-0018-T3-M-DNA_only.productive.tsv' 
-#p_id_start is 11, p_id_end is 21, cycle_start is 23 and cycle_end is 24.
-######################################################################       
+# Code modified from: github.com/pughlab/capTCR_seqAnalysis/blob/main/R/VJCassetteUsage/Step2_TRBclonotypes_txtFile_concatenation.R     
  
+# Creates excel file containing the data for VJ usage on each clonotype
 # @param data_path: Path towards clonotype data
 # @param file_path_output: Path towards desired output folder
 # @param file_name: desired output file name
