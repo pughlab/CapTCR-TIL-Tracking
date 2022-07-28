@@ -9,11 +9,12 @@ library (igraph)
 library (gridExtra)
 library (randomcoloR)
 
+# Runs a correlation test on whether clone fraction and the CDR3/VJ for that clonotype are related
 # @param patient: Patient desired for analysis
 # @param cohort: Sample cohort desired for analysis
 # @param timepoint_order: Timepoint order desired for analysis
-# @param step2_output_filename: Filename for step 1 file
-# @param step2_output_datapath: Datapath for step 1 file
+# @param step1_output_filename: Filename for step 1 file
+# @param step1_output_datapath: Datapath for step 1 file
 # @param step2_output_filename: Filename for step 2 file
 # @param step2_output_datapath: Datapath for step 2 file
 
