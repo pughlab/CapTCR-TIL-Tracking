@@ -7,7 +7,6 @@ library (tidyverse)
 library (ggraph)
 library (igraph)
 library (gridExtra)
-library (randomcoloR)
 
 # Calculates the TCR convergence for a specific patient across timepoints
 # @param patient: Patient desired for analysis
