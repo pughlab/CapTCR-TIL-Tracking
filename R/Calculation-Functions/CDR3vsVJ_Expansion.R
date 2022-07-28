@@ -1,3 +1,8 @@
+#################################
+# CDR3 vs VJ-sepcific expansion #
+#################################
+
+# Required libraries: 
 library (tidyverse)
 library (ggraph)
 library (igraph)
@@ -5,10 +10,7 @@ library (gridExtra)
 library (randomcoloR)
 library(immunarch)
 
-#################################
-# CDR3 vs VJ-sepcific expansion #
-#################################
-
+# Performs z-test to evaluate if expansion is dependent on a specific CDR3 or VJ
 # @param patient: Patient desired for analysis
 # @param cohort: Sample cohort desired for analysis
 # @param clones: Clones to be isolated (TIL, background, all)
