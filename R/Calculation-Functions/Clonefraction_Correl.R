@@ -7,7 +7,6 @@ library (tidyverse)
 library (ggraph)
 library (igraph)
 library (gridExtra)
-library (randomcoloR)
 
 # Runs a correlation test on whether clone fraction and the CDR3/VJ for that clonotype are related
 # @param patient: Patient desired for analysis
