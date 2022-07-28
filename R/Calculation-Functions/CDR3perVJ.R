@@ -7,7 +7,6 @@ library (tidyverse)
 library (ggraph)
 library (igraph)
 library (gridExtra)
-library (randomcoloR)
 
 # Calculates the CDR3 per VJ at each timepoint for a patient
 # @param patient: Patient desired for analysis
