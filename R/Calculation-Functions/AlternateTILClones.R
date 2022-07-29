@@ -56,7 +56,7 @@ TIL_calc <- function(patient, sampcohort, chain, clnefrc, sample, expanded=FALSE
     
    # Subsets the data frame to the expansive clones if desired by the user
     if(expanded==TRUE){
-        reference_data$TIL_cloneFraction <- reference_data$cloneFraction[match(reference_data$aaSeqCDR3, TIL_data$aaSeqCDR3)]
+        reference_data$TIL_cloneFraction <- TIL_data$cloneFraction[match(reference_data$aaSeqCDR3, TIL_data$aaSeqCDR3)]
         reference_data <- reference_data[!(reference_data$cloneFraction < reference_data$TIL_cloneFraction),]
         reference_data[is.na(reference_data)] <- 0
     }
