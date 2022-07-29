@@ -38,10 +38,10 @@ TCRConvergence <- function(patient, cohort, timepoint_order, step2_output_filena
     }
 
     # Creating a dataframe analyzing the TCR convergence present at each point
-    TCRConvergence <- data.frame(matrix(ncol=length(unique(clonotypes$Cycle)), 
+    TCRConverg <- data.frame(matrix(ncol=length(unique(clonotypes$Cycle)), 
                                        nrow=1, NA))
     # Computing the TCR convergence at each timepoint
-    colnames(TCRConvergence) <- unique(clonotypes$Cycle)
+    colnames(TCRConverg) <- unique(clonotypes$Cycle)
     for(i in 1:length(unique(clonotypes$Cycle))){
        cycle_df <- clonotypes[which(clonotypes$Cycle==unique(clonotypes$Cycle)[i]),]
        cycle_df$occurence <- NA
