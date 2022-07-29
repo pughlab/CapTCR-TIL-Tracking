@@ -62,6 +62,5 @@ TIL_calc <- function(patient, sampcohort, chain, clnefrc, sample, expanded=FALSE
     }
     
     # Calculates the amount of the sample is taken up by TIL-infusion clones and prints the result
-    response <- sum(reference_data$cloneFraction)
-    print(response)
+    response <<- sum(reference_data$cloneFraction)
 }
