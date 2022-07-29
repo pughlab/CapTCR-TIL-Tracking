@@ -63,7 +63,7 @@ TCRConvergence <- function(patient, cohort, timepoint_order, step2_output_filena
             print("Variable Sequence Doesn't Match")
             }
         }
-    TCRConvergence[i][[1]] <- sum(duplicated_cycle$cloneFraction)
+    TCRConverg[i][[1]] <- sum(duplicated_cycle$cloneFraction)
     }
-    TCRConvergence <<- TCRConvergence
+    TCRConverg <<- TCRConverg
 }
