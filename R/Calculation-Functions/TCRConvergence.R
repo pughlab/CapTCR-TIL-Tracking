@@ -77,5 +77,5 @@ TCRConvergence <- function(patient, cohort, timepoint_order, step2_output_filena
         }
     TCRConvergence[i][[1]] <- sum(duplicated_cycle$cloneFraction)
     }
-    TCRConvergence
+    TCRConvergence <<- TCRConvergence
 }
