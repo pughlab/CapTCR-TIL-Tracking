@@ -48,6 +48,8 @@ RelPlot <- function(patient, sampcohort, chain, clnefrc, dir_clones,
     # Orders filenames based on chronological sample order
     Rel_df$samporder <- factor(Rel_df$samporder, levels = c(samporder))
     levels(Rel_df$samporder) <- c(samporder)
+  
+    Rel_df <<- Rel_df
     
     
     # Creates relative abundance 'myp' plot global variable
