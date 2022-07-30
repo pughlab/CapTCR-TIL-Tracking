@@ -17,9 +17,7 @@ Overlay_RelDiv <- function(patient, sampcohort, chain, clnefrc, dir_clones,
 
 # Loads diversity and relative abundance plots and creates dataframe combining the data from the 2
 DivPlot(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys, primary, max)
-Div_df <- myp
 RelPlot(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys, primary)
-Rel_df <- myp
 RelDiv_df <- cbind(Rel_df, Div_df)
 # Creates plot overalying the 2 with a double y-axis and colouring the second y-axis red  
 myp <<- ggplot(RelDiv_df) +
