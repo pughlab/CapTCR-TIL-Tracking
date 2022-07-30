@@ -51,6 +51,8 @@ DivPlot <- function(patient, sampcohort, chain, clnefrc, dir_clones,
     Div_df$Filename <- factor(Div_df$Filename, levels = c(samporder))
     levels(Div_df$Filename) <- c(samporder)
     
+    Div_df <<- Div_df  
+  
     # Creates plot assigned to 'myp' global variable
     p <- ggplot(Div_df) + geom_line(aes(x=Filename, y=Diversity, group=1), stat="identity", color="#E7B800", size=1.5) +
                           geom_point(aes(x=Filename, y=Diversity, shape=factor(Shape)), colour="#E7B800", size = 4.0)+
