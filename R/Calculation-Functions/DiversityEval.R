@@ -37,6 +37,6 @@ DivCalc <- function(patient, sampcohort, chain, clnefrc, dir_clones,
     # Orders filenames based on chronological sample order
     Div_df$Filename <- factor(Div_df$Filename, levels = c(samporder))
     levels(Div_df$Filename) <- c(samporder)
-    
+    Div_df <<- Div_df
     print(Div_df)
 }
