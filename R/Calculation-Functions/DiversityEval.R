@@ -30,7 +30,7 @@ DivCalc <- function(patient, sampcohort, chain, clnefrc, dir_clones,
     for(i in 1:length(unique(CDR3_fraction$filename))){
         CDR3_df <- CDR3_fraction[which(CDR3_fraction$filename==samporder[i]),]
         CDR3_df <- CDR3_df[2:4]
-        colnames(CDR3_df) <- c("CDR3.nt", "Proportion", "Clones")
+        colnames(CDR3_df) <- c("CDR3.aa", "Proportion", "Clones")
         Div_df$Diversity[i] <- repDiversity(CDR3_df, .method="inv.simp")
     }
     
