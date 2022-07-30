@@ -24,7 +24,7 @@ alignment_fig <- function(patients, sampcohort, chain, clnefrc, dir_clones, dir_
         lst[[i]] <- length(eval(as.name(paste(patients[i], sampcohort, sep=""))))
     }
     max <- as.numeric(lst[(which.max(lst))])
-    x_labs <- order[1:max]
+    #x_labs <- order[1:max]
     
     # Creates a list of the required widths of each of the patients plots based on their number of samples compared to the patient with the maximum number of samples
     widths <- list()
@@ -89,7 +89,7 @@ alignment_fig <- function(patients, sampcohort, chain, clnefrc, dir_clones, dir_
             draw_plot(eval(as.name(width_df$patients[1])), 0, 0.5, width_df$widths[1], 0.5) + 
             draw_plot(eval(as.name(width_df$patients[2])), 0, 0, width_df$widths[2], 0.5) 
     }
-    
+    all_plots <<- all_plots
     # The final plot is printed as a png
     png(file = paste(dir_output, file_output, ".png", sep=""),
         width = 400*max,
