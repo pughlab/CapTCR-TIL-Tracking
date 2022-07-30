@@ -47,7 +47,7 @@ Top50.fx <- function(patient, sampcohort, chain, clnefrc, Top50, Reference,
     }
 
     # Calculating the fraction of the reference sample taken up by the clones in the top 50% of the Top50 sample
-    ReferenceFrc <- sum(Top50Spliced$Reference_clonefraction)
+    ReferenceFrc <<- sum(Top50Spliced$Reference_clonefraction)
     print(ReferenceFrc)
 
 }
