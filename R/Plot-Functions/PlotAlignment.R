@@ -56,8 +56,8 @@ alignment_fig <- function(patients, sampcohort, chain, clnefrc, dir_clones, dir_
             Overlay_RelDiv(width_df$patients[i], sampcohort, chain, clnefrc, dir_clones, 
                            dir_samplekeys, file_samplekeys, primary, 500)
         }
-        myp1 <- myp + theme(axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.y = element_blank())
-    
+        #myp1 <- myp + theme(axis.text.x = element_blank(), axis.text.y = element_blank(), axis.title.y = element_blank())
+        myp1 <- myp
         assign(width_df$patients[i], myp1)
         pltlst[[i]] <- eval(as.name(width_df$patients[i]))
     }
