@@ -22,7 +22,7 @@ RelDiv_df <- cbind(Rel_df, Div_df)
 # Creates plot overalying the 2 with a double y-axis and colouring the second y-axis red  
 myp <<- ggplot(RelDiv_df) +
         geom_bar(aes(x=samporder, y=count, fill=type, alpha=0.5), stat="identity", width=1/3) + scale_fill_manual(values = c("steelblue","goldenrod")) +
-        scale_y_continuous(limits=c(0,1.0), sec.axis=sec_axis(~.*500)) + ylab(patient) +
+        scale_y_continuous(labels=scales::percent, limits=c(0,1.0), sec.axis=sec_axis(~.*500)) + ylab(patient) +
         theme(axis.title.y = element_text(size = 13, angle=0, vjust=0.5),
               axis.title.x = element_blank(),
               axis.line = element_line(color = "black"),
