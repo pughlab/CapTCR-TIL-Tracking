@@ -71,17 +71,26 @@ ClonetrackPlot <- function(patient, sampcohort, chain, clnefrc, dir_clones, dir_
     # Orders filenames based on chronological sample order
     CDR3_fraction$filename <- factor(CDR3_fraction$filename, levels = c(samporder))
     levels(CDR3_fraction$filename) <- c(samporder)
+    CDR3_fraction <<- CDR3_fraction
 
     # Creates plot for the data frame and list of colors and associated CDR3 sequences
-    p <- ggplot(CDR3_fraction, aes(x = filename, 
-                              y = cloneFraction,
-                              fill = aaSeqCDR3,
-                              stratum = aaSeqCDR3,
-                              alluvium = aaSeqCDR3)) + 
-        geom_alluvium(decreasing = FALSE) + 
+    if(patient == "TLML_1_" & sampcohort == "gDNA"){
+      p <- ggplot(data=CDR3_fraction, aes(x=factor(filename, level=c('apheresis_2013_9', 'infusion_2013_8', 'FU_01_2014_1', 'FU_02_2014_4', 'FU_03_2014_7')), y=cloneFraction, fill=aaSeqCDR3, stratum=aaSeqCDR3, alluvium=aaSeqCDR3)) +
+        geom_alluvium(decreasing=FALSE) +
         geom_stratum(decreasing = FALSE, stat = "alluvium") + 
-        scale_fill_manual(breaks = names(mycolors[mycolors != "white"]),values = mycolors)
-        
+        scale_fill_manual(breaks = names(mycolors[mycolors != "white"]), values=mycolors) +
+        scale_x_discrete(limits=c('apheresis_2013_9', 'infusion_2013_8', '4 week sample', 'FU_01_2014_1', 'FU_02_2014_4', 'FU_03_2014_7'), labels=c('apheresis_2013_9', 'infusion_2013_8', '4 week sample', 'FU_01_2014_1', 'FU_02_2014_4', 'FU_03_2014_7'))
+    }
+    else {
+      p <- ggplot(CDR3_fraction, aes(x = filename, 
+                                y = cloneFraction,
+                                fill = aaSeqCDR3,
+                                stratum = aaSeqCDR3,
+                                alluvium = aaSeqCDR3)) + 
+          geom_alluvium(decreasing = FALSE) + 
+          geom_stratum(decreasing = FALSE, stat = "alluvium") + 
+          scale_fill_manual(breaks = names(mycolors[mycolors != "white"]),values = mycolors)
+    }      
 
     myp <<- p + ylab(patient) +
         theme(axis.title.y = element_text(size = 13, angle=0, vjust=0.5),
@@ -94,4 +103,5 @@ ClonetrackPlot <- function(patient, sampcohort, chain, clnefrc, dir_clones, dir_
           panel.background = element_rect(fill = "transparent",colour = NA),
           legend.position = "blank",
           plot.margin = unit(c(0.2,0,0,0),"cm"))
+    
 }
