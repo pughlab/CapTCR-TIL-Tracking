@@ -22,12 +22,12 @@ library(bioseq)
 # @param step1_output_datapath: Datapath of step 1 output
 # @param step2_output_filename: Filename of step 2 output
 # @param step2_output_datapath: Datapath of step 2 output
-# @param CDR3_colored_filename: Filename of CDR3 colors dataframe
+# @param CDR3_colors_filename: Filename of CDR3 colors dataframe
 # @param CDR3_colors_datapath: Datapath of CDR3 colors dataframe
 
 VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_width, fig_path,
                           step1_output_filename, step1_output_datapath, step2_output_filename, step2_output_datapath,
-                         CDR3_colored_filename, CDR3_colors_datapath){
+                         CDR3_colors_filename, CDR3_colors_datapath){
     
     #If you have multiple patients and want to arrange the 
     #plots in multiple columns when plotting them side by side, 
