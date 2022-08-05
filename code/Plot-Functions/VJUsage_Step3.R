@@ -38,7 +38,7 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
 
     #Name of your final figure. This name should end
     #with '.png'. Example: 'ProjectX_Blood.png'
-    fig_name  <- paste("TLML_VJUsage_colortest", cohort, patient, ".png", sep="_")
+    fig_name  <- paste("TLML_VJUsage", cohort, patient, ".png", sep="_")
 
     #height and width of your figure. You can select these variables
     #based on the number of rows and columns in your figure.
