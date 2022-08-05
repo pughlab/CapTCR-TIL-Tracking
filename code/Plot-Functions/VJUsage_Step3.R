@@ -16,7 +16,7 @@ library(bioseq)
 # @param cohort: Sample cohort desired for analysis
 # @param timepoint_order: Ordering of the samples desired for analysis
 # @param fig_height: Desired height of the figure (for manuscript figure_height equals 1)
-# @param fig_width: Desired width of the figure (for manuscript figure_width equals 1.5x # of samples)
+# @param fig_width: Desired width of the figure (for manuscript figure_width equals 1x # of samples)
 # @param fig_path: Desired output path of figure png
 # @param step1_output_filename: Filename of step 1 output
 # @param step1_output_datapath: Datapath of step 1 output
@@ -38,7 +38,7 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
 
     #Name of your final figure. This name should end
     #with '.png'. Example: 'ProjectX_Blood.png'
-    fig_name  <- paste("TLML_VJUsage_colortest", cohort, patient, ".png", sep="_")
+    fig_name  <- paste("TLML_VJUsage", cohort, patient, ".png", sep="_")
 
     #height and width of your figure. You can select these variables
     #based on the number of rows and columns in your figure.
@@ -248,7 +248,7 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
                                                  V(graph_data[[i]])$size
                                                  ) 
                                          ) + 
-                    geom_node_circle( size = 0.1 ,
+                    geom_node_circle( size = 0.05 , 
                                       aes_(
                                               fill = as.factor (
                                               V(graph_data[[i]])$color_status
@@ -259,8 +259,7 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
                                                  CDR3_colors$mycolors),
                                       breaks = c(1:length(CDR3_colors$mycolors))
                                       )+
-                    labs (title = V(graph_data[[i]])$name[1] ) +
-                    theme_graph()+
+              theme_graph()+
                     theme(legend.position = "None" ,
                           plot.margin = unit(c(0.001 ,
                                                0.001 ,
@@ -279,21 +278,26 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
     #'''''''Ends here
     ########################################################################
     #Printing the plots and saving the results:
-    png(
+    ggraph_plots <<- ggraph_plots
+     png(
             file.path(
                     fig_path , fig_name
                     )  ,
             height =  fig_height ,
-            width  =  length(timepoint_list)*3 ,
-            res    = 1000 , 
+            width  =  fig_width,
+            res    = 5000 , 
             units  = "in" ,
             bg     = "transparent"
             )
 
-
-    gridExtra::grid.arrange(grobs = ggraph_plots,
-                            ncol = length(timepoint_list), 
-                            top = paste("VJ Usage", cohort, patient, sep=" "))
-
+    if(patient=="TLML_1_" & cohort=="DNA"){
+      layout_matrix <- c(1,2,NA,3,4,5)
+    }
+    else{
+      layout_matrix <- c(1:length(timepoint_list))
+    }
+    gridExtra::grid.arrange(grobs = ggraph_plots, layout_matrix=rbind(layout_matrix),
+                             ncol = length(layout_matrix))
     dev.off()
 }
+
