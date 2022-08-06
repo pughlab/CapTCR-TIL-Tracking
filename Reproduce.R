@@ -1,7 +1,7 @@
 # Produces serperate files from mixcr output file
 
 # Loading packages and scripts
-GitHub_path <- getwd()
+GitHub_path <- paste(getwd(), "/", sep="")
 dir_main <- paste(GitHub_path, "data/", sep="")
 file_samplekeys <- "TLML_samples_keys.xlsx"
 
