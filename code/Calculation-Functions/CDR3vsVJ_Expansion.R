@@ -7,7 +7,6 @@ library (tidyverse)
 library (ggraph)
 library (igraph)
 library (gridExtra)
-library(immunarch)
 
 # Performs z-test to evaluate if expansion is dependent on a specific CDR3 or VJ
 # @param patient: Patient desired for analysis
