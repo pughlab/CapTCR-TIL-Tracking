@@ -180,7 +180,7 @@ ReproduceSupplementaryData <- function(GitHub_path){
   writeData(SupplementaryData, sheet="Table S10", x=TableS10_df)
   writeData(SupplementaryData, sheet="Table S11", x=TableS11_df)
   writeData(SupplementaryData, sheet="Table S12", x=TableS12_df)
-  saveWorkbook(SupplementaryData, paste(GitHub_path, "Data/SupplementaryData_reproduced.xlsx", sep=""))
+  saveWorkbook(SupplementaryData, paste(GitHub_path, "results/SupplementaryData_reproduced.xlsx", sep=""))
 }
 ReproduceSupplementaryData(GitHub_path)
 
