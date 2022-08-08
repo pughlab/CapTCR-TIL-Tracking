@@ -8,7 +8,6 @@ file_samplekeys <- "TLML_samples_keys.xlsx"
 # Required packages:
 install.packages("ggplot2")
 install.packages("ggalluvial")
-install.packages("immunarch")
 install.packages("readxl")
 install.packages("openxlsx")
 install.packages("cowplot")

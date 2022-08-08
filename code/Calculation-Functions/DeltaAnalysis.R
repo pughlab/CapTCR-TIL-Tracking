@@ -107,14 +107,19 @@ DeltaA <- function(patient, sampcohort, chain, clnefrc, datapoint, first, second
     
     # Finds the delta between the diversity in the samples if user specified
     if(datapoint=="Diversity"){
-        # Changes the column names to be readable to the immunarch library
-        df_first <- df_first[2:4]
-        colnames(df_first) <- c("CDR3.nt", "Proportion", "Clones")
-        df_second <- df_second[2:4]
-        colnames(df_second) <- c("CDR3.nt", "Proportion", "Clones")
-        
-        data_first <- repDiversity(df_first, .method = "inv.simp")
-        data_second <- repDiversity(df_second, .method="inv.simp")
+        N <- sum(df_first$cloneCount)
+        sum_simpson <- 0
+        for(n in df_first$cloneCount){
+          sum_simpson <- sum_simpson + (n/N)^2
+        }        
+        data_first <- 1/sum_simpson
+
+        N <- sum(df_second$cloneCount)
+        sum_simpson <- 0
+        for(n in df_second$cloneCount){
+          sum_simpson <- sum_simpson + (n/N)^2
+        }  
+        data_second <- 1/sum_simpson
         
         delta = data_second - data_first
         

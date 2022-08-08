@@ -30,9 +30,12 @@ DivPlot <- function(patient, sampcohort, chain, clnefrc, dir_clones,
     # Filling in dataframe values with previously loaded data
     for(i in 1:length(unique(CDR3_fraction$filename))){
         CDR3_df <- CDR3_fraction[which(CDR3_fraction$filename==samporder[i]),]
-        CDR3_df <- CDR3_df[2:4]
-        colnames(CDR3_df) <- c("CDR3.aa", "Proportion", "Clones")
-        Div_df$Diversity[i] <- repDiversity(CDR3_df, .method="inv.simp")
+        N <- sum(CDR3_df$cloneCount)
+        sum_simpson <- 0
+        for(n in CDR3_df$cloneCount){
+          sum_simpson <- sum_simpson + (n/N)^2
+        }
+        Div_df$Diversity[i] <- 1/sum_simpson
         if(Div_df$Diversity[i]>max){
             Div_df$Shape[i] <- 17
             Div_df$Diversity[i] <- max
