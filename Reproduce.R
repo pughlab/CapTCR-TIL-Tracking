@@ -33,7 +33,7 @@ ReproduceSupplementaryData <- function(GitHub_path){
   colnames(TableS3_df) <- c("Patient","baseline_apheresis", "infusion", "4W", "FU1", "FU2", "FU3", "FU4", "FU5")
   TableS3_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
   for(row in 1:length(TableS3_df$Patient)){
-    CDR3perVJ(TableS3_df$Patient[row], "DNA", colnames(TableS3_df)[2:ncol(TableS3_df)], "VJTreemaps.csv", paste(GitHub_path, "Data/", sep=""))
+    CDR3perVJ(TableS3_df$Patient[row], "DNA", colnames(TableS3_df)[2:ncol(TableS3_df)], "VJTreemaps.csv", dir_main)
     sorted_df <- total_df %>% arrange(factor(Cycle, levels = colnames(TableS3_df)[2:ncol(TableS3_df)]))
     TableS3_df[row, 2:length(TableS3_df)] <- sorted_df$AverageCDR3
     if(TableS3_df$Patient[row] == "TLML_1_"){
@@ -45,7 +45,7 @@ ReproduceSupplementaryData <- function(GitHub_path){
   colnames(TableS4_df) <- c("Patient","baseline_apheresis", "infusion", "4W", "FU1", "FU2", "FU3", "FU4", "FU5")
   TableS4_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
   for(row in 1:length(TableS4_df$Patient)){
-    TCRConvergence(TableS4_df$Patient[row], "DNA", colnames(TableS4_df)[2:ncol(TableS4_df)], "VJTreemaps.csv", paste(GitHub_path, "Data/", sep=""))
+    TCRConvergence(TableS4_df$Patient[row], "DNA", colnames(TableS4_df)[2:ncol(TableS4_df)], "VJTreemaps.csv", dir_main)
     if(TableS4_df$Patient[row] != "TLML_1_"){
       sorted_df <- TCRConverg[colnames(TableS4_df)[2:(length(TCRConverg)+1)]]
       TableS4_df[row, 2:(length(sorted_df)+1)] <- sorted_df
