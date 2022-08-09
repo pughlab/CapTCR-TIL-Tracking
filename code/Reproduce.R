@@ -20,7 +20,7 @@ install.packages("magick")
 
 # Generating list of relevant R scripts from GitHub repo and then loading in functions and libraries
 R_scripts <- list.files(path=paste(GitHub_path, "code/", sep=""), pattern="\\.R$", recursive=TRUE)
-R_scripts <- R_scripts[!grepl("Quality-Control|VJUsage_Step1|VJUsage_Step2", R_scripts)]
+R_scripts <- R_scripts[!grepl("Quality-Control|VJUsage_Step1|VJUsage_Step2|Reproduce", R_scripts)]
 for(script in R_scripts){
   source(paste(GitHub_path, "code/", script, sep=""))
 }
