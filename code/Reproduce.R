@@ -179,7 +179,7 @@ ReproduceSupplementaryData <- function(GitHub_path){
   writeData(SupplementaryData, sheet="Table S10", x=TableS10_df)
   writeData(SupplementaryData, sheet="Table S11", x=TableS11_df)
   writeData(SupplementaryData, sheet="Table S12", x=TableS12_df)
-  saveWorkbook(SupplementaryData, paste(GitHub_path, "result/SupplementaryData_reproduced.xlsx", sep=""))
+  saveWorkbook(SupplementaryData, paste(GitHub_path, "results/SupplementaryData_reproduced.xlsx", sep=""))
 }
 ReproduceSupplementaryData(GitHub_path)
 
@@ -205,7 +205,7 @@ ReproduceFigures <- function(GitHub_path){
   RelDivLow <- image_read(paste(GitHub_path, "data/RelDiv_low.png", sep=""))
   FigOverlay <- image_read(paste(GitHub_path, "data/Clone_RelDivFigOverlay.png", sep=""))
   
-  png(paste(GitHub_path, "result/CloneTrack_RelDiv_reproduced.png", sep=""), width = 8000, height = 8000, units = "px")
+  png(paste(GitHub_path, "results/CloneTrack_RelDiv_reproduced.png", sep=""), width = 8000, height = 8000, units = "px")
   plot.new()
   plot.window(xlim=c(0, 8000), ylim=c(0, 8000))
   rasterImage(ClonetrackHigh, xleft=1361, ybottom=870, xright=4273  , ytop=4510)
@@ -255,7 +255,7 @@ ReproduceFigures <- function(GitHub_path){
   
   
   
-  png(paste(GitHub_path, "result/VJUsage_reproduced.png", sep=""), width = 5500, height = 6000, units = "px")
+  png(paste(GitHub_path, "results/VJUsage_reproduced.png", sep=""), width = 5500, height = 6000, units = "px")
   plot.new()
   plot.window(xlim=c(0, 5500), ylim=c(0, 6000))
   rasterImage(VJTLML_1_, xleft=920, ybottom=1830, xright=4205  , ytop=2378)
