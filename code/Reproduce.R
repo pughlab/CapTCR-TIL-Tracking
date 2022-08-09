@@ -190,13 +190,13 @@ ReproduceFigures <- function(GitHub_path){
   low_exp <- c("TLML_18", "TLML_4_", "TLML_7_", "TLML_20")
   high_exp <- c("TLML_29", "TLML_1_", "TLML_26", "TLML_22", "TLML_16")
   alignment_fig(low_exp, "gDNA", "TRB", 0, dir_main, dir_main, file_samplekeys,
-                "clonetrack", "Baseline", paste(GitHub_path, "Data/",sep=""), "Clonetrack_low")
+                "clonetrack", "Baseline", paste(GitHub_path, "data/",sep=""), "Clonetrack_low")
   alignment_fig(high_exp, "gDNA", "TRB", 0, dir_main, dir_main, file_samplekeys,
-                "clonetrack", "Baseline", paste(GitHub_path, "Data/",sep=""), "Clonetrack_high")
+                "clonetrack", "Baseline", paste(GitHub_path, "data/",sep=""), "Clonetrack_high")
   alignment_fig(low_exp, "gDNA", "TRB", 0, dir_main, dir_main, file_samplekeys,
-                "rel_div", "Baseline", paste(GitHub_path, "Data/",sep=""), "RelDiv_low")
+                "rel_div", "Baseline", paste(GitHub_path, "data/",sep=""), "RelDiv_low")
   alignment_fig(high_exp, "gDNA", "TRB", 0, dir_main, dir_main, file_samplekeys,
-                "rel_div", "Baseline", paste(GitHub_path, "Data/",sep=""), "RelDiv_high")
+                "rel_div", "Baseline", paste(GitHub_path, "data/",sep=""), "RelDiv_high")
   
   # Reading exported clone tracking and relative abundance/diversity plots and exporting into figure format
   ClonetrackHigh <- image_read(paste(GitHub_path, "data/Clonetrack_high.png", sep=""))
