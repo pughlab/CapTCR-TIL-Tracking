@@ -7,17 +7,13 @@
 # @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
-# @param dir_clones: parent directory where clone files are located
-# @param dir_samplekeys: directory where the sample keys excel file are located
-# @param file_samplekeys: file name of the sample keys 
 # @param primary: desired sample to appear first (Baseline or TIL)
 
-Overlay_RelDiv <- function(patient, sampcohort, chain, clnefrc, dir_clones, 
-                           dir_samplekeys, file_samplekeys, primary, max){
+Overlay_RelDiv <- function(patient, sampcohort, chain, clnefrc, primary, max){
 
 # Loads diversity and relative abundance plots and creates dataframe combining the data from the 2
-DivPlot(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys, primary, max)
-RelPlot(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys, primary)
+DivPlot(patient, sampcohort, chain, clnefrc, primary, max)
+RelPlot(patient, sampcohort, chain, clnefrc, primary)
 #Rel_df$count <- Rel_df$count*100
 RelDiv_df <- cbind(Rel_df, Div_df)
 # Creates plot overalying the 2 with a double y-axis and colouring the second y-axis red 

@@ -10,18 +10,14 @@
 # @param datapoint: The data point wanted to be analyzed (Expansion, Productive, Expression, Diversity)
 # @param first: The name of the first sample
 # @param second: The name of the second sample
-# @param dir_clones: parent directory where clone files are located
-# @param dir_samplekeys: directory where the sample keys excel file are located
-# @param file_samplekeys: file name of the sample keys 
 
-DeltaA <- function(patient, sampcohort, chain, clnefrc, datapoint, first, second, 
-                   dir_clones, dir_samplekeys, file_samplekeys){
+DeltaA <- function(patient, sampcohort, chain, clnefrc, datapoint, first, second){
 
     # Loads in patient samporder
     samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
     
     # Loads in patient data
-    Load_data(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys)
+    Load_data(patient, sampcohort, chain, clnefrc)
     
     # If a patient doesn't have a TIL file, it will use the TIL file from the related gDNA TIL data from the patient
     if(length(TIL_data$aaSeqCDR3) == 0){

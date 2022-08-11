@@ -9,18 +9,14 @@
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 # @param Top50: sample which will have its top 50% compared
 # @param Reference: sample which will be compared to 
-# @param dir_clones: directory where clone files are located
-# @param dir_samplekeys: directory where the sample keys file is located
-# @param file_samplekeys: name of the sample keys file
 
-Top50.fx <- function(patient, sampcohort, chain, clnefrc, Top50, Reference,
-                    dir_clones, dir_samplekeys, file_samplekeys){
+Top50.fx <- function(patient, sampcohort, chain, clnefrc, Top50, Reference){
     
     # Loads patient sample order
     samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
 
     # Loads patient clone data
-    Load_data(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys)
+    Load_data(patient, sampcohort, chain, clnefrc)
 
     #Creating dataframes for the clones of the Top50 and Reference samples
     Top50Samp <- CDR3_fraction[which(CDR3_fraction$filename==grep(Top50, samporder, value=TRUE)),]
@@ -49,5 +45,4 @@ Top50.fx <- function(patient, sampcohort, chain, clnefrc, Top50, Reference,
     # Calculating the fraction of the reference sample taken up by the clones in the top 50% of the Top50 sample
     ReferenceFrc <<- sum(Top50Spliced$Reference_clonefraction)
     print(ReferenceFrc)
-
 }

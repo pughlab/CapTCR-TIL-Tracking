@@ -7,16 +7,12 @@
 # @param sampcohort2: Desired second sample cohort, could be gDNA, cDNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
-# @param dir_clones: parent directory where clone files are located
-# @param dir_samplekeys: directory where the sample keys excel file are located
-# @param file_samplekeys: file name of the sample keys 
 # @param dir_output: directory for the output png
 # @param file_output: png file name
 
 rsq <- function (x, y) cor(x, y) ^ 2
 
-SampleCohort_Correl <- function(sampcohort1, sampcohort2, chain, clnefrc, dir_clones, dir_samplekeys, 
-                               file_samplekeys, dir_output, file_output){
+SampleCohort_Correl <- function(sampcohort1, sampcohort2, chain, clnefrc, dir_output, file_output){
     
     #List of patients required for analysis (requires manual change)
     patients <- c("TLML_4_", "TLML_7_", "TLML_18", "TLML_20", "TLML_22",
@@ -24,11 +20,11 @@ SampleCohort_Correl <- function(sampcohort1, sampcohort2, chain, clnefrc, dir_cl
 
     # Loops through the patients and loads the data from the 2 desired sample cohorts in one dataframe
     for(patient in patients){
-        Load_data(patient, sampcohort1, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys)
+        Load_data(patient, sampcohort1, chain, clnefrc)
         Sample1_fraction <- FW_data[c("aaSeqCDR3", "cloneFraction")]
         Sample1_fraction$clone2_Fraction <- NA
         
-        Load_data(patient, sampcohort2, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys)
+        Load_data(patient, sampcohort2, chain, clnefrc)
         Sample2_fraction <- FW_data[c("aaSeqCDR3", "cloneFraction")]
         
         Sample1_fraction$clone2_Fraction <- Sample2_fraction$cloneFraction[match(Sample1_fraction$aaSeqCDR3, Sample2_fraction$aaSeqCDR3)]
@@ -67,5 +63,4 @@ SampleCohort_Correl <- function(sampcohort1, sampcohort2, chain, clnefrc, dir_cl
         res=300)
    print(myp)
    dev.off() 
-    
 } 

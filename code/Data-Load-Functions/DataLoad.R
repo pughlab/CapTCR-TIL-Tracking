@@ -7,31 +7,29 @@
 # @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
-# @param dir_clones: parent directory where clone files are located
-# @param dir_samplekeys: directory where the sample keys excel file are located
-# @param file_samplekeys: file name of the sample keys 
-
-# Loading in MiXCR output file
-MiXCR_output <- read_xlsx(paste0(dir_clones,"mixcr_output.xlsx"))
-
-# Loading data from the sample keys in order to convert file names into readable format
-samplekeys <- read_excel(paste(dir_samplekeys, file_samplekeys, sep=""))
-for(i in 1:nrow(samplekeys)){
-  samplekeys$Informatics_Name[i] <- sub("*genomic*", "DNA", samplekeys$Informatics_Name[i]) 
-}
-
-Load_data <- function(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys){
-  compldfle <- as.data.frame(MiXCR_output[which(MiXCR_output$patient==patient & MiXCR_output$cohort==sampcohort),])
+# @param dir_data: parent directory where data is stored
+dir_data <- "/Users/cameronkerr/CapTCRRepo/CapTCR-TIL-Tracking/data/"
+GeneralDataLoad <- function(dir_data){
+  # Loading in MiXCR output file
+  MiXCR_output <<- read_xlsx(paste0(dir_data,"mixcr_output.xlsx"))
   
   # Loading data from the sample keys in order to convert file names into readable format
-  samplekeys <- read_excel(paste(dir_samplekeys, file_samplekeys, sep=""))
+  samplekeys <- read_excel(paste(dir_data, "TLML_samples_keys.xlsx", sep=""))
   for(i in 1:nrow(samplekeys)){
     samplekeys$Informatics_Name[i] <- sub("*genomic*", "DNA", samplekeys$Informatics_Name[i]) 
   }
   samplekeys <<- samplekeys
   
-  # Creating list of clone files for specific patient, sample cohort, and TCR chain
-  files <- list.files(paste(dir_clones, sampcohort, "/CLONES_", chain, patient, "/", sep = ""))
+  # Loading data from VJ usage analysis
+  clonotypes <<- read_csv(file.path(dir_data , "VJTreemaps.csv"))
+  cassette_stats <<- read_csv(file.path(dir_data , "VJUsage.csv"))
+  
+  # Loading in the CDR3 colors dataset
+  CDR3_colors <- read_csv(file.path(CDR3_colors_datapath,CDR3_colors_filename))
+}
+
+Load_data <- function(patient, sampcohort, chain, clnefrc){
+  compldfle <- as.data.frame(MiXCR_output[which(MiXCR_output$patient==patient & MiXCR_output$cohort==sampcohort),])
   
   # Longitudinally orders the samples from previously assigned variables
   samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
@@ -41,7 +39,7 @@ Load_data <- function(patient, sampcohort, chain, clnefrc, dir_clones, dir_sampl
   
   # Removes empty clones and clones with only 1 occurence
   preCDR3_fraction <- preCDR3_fraction[which(preCDR3_fraction$cloneCount>1),]
-  unproductive <<- preCDR3_fraction
+  unproductive <- preCDR3_fraction
   
   # Removes unproductive clonotypes (NOTE: An extra clone "CDR3*" is added to solve null set problem)
   preCDR3_fraction <- preCDR3_fraction[-c(grep("[*]", c(preCDR3_fraction$aaSeqCDR3, "CDR3*"))),]

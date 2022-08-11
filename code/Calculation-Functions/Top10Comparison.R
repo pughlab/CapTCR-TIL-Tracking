@@ -11,11 +11,10 @@
 # @param dir_samplekeys: directory where the sample keys excel file are located
 # @param file_samplekeys: file name of the sample keys 
 
-Top104WComp <- function(patient, sampcohort, chain, clnefrc, 
-                        dir_clones, dir_samplekeys, file_samplekeys){
+Top104WComp <- function(patient, sampcohort, chain, clnefrc){
   
   # Loads in patient data
-  Load_data(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys)
+  Load_data(patient, sampcohort, chain, clnefrc,)
   
   # Loading patient sample order
   samporder <- eval(as.name(paste(patient, sampcohort, sep="")))

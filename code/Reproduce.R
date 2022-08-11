@@ -1,7 +1,7 @@
 # Produces serperate files from mixcr output file
 
 # Loading packages and scripts
-GitHub_path <- "/Users/cameronkerr/CapTCRRepo/CapTCR-TIL-Tracking/"
+GitHub_path <- getwd()
 dir_main <- paste(GitHub_path, "data/", sep="")
 file_samplekeys <- "TLML_samples_keys.xlsx"
 
@@ -24,6 +24,8 @@ R_scripts <- R_scripts[!grepl("Quality-Control|VJUsage_Step1|VJUsage_Step2|Repro
 for(script in R_scripts){
   source(paste(GitHub_path, "code/", script, sep=""))
 }
+
+GeneralDataLoad(dir_main)
 
 # Reproduces all data from the supplementary data 
 ReproduceSupplementaryData <- function(GitHub_path){

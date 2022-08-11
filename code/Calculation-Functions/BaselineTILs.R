@@ -8,15 +8,11 @@
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 # @param char: desired characteristic to be analyzed ('clonotypes' or 'TCRs')
-# @param dir_clones: directory where clone files are located
-# @param dir_samplekeys: directory where the sample keys file is located
-# @param file_samplekeys: name of the sample keys file
 
-
-Base_TILclone <- function(patient, sampcohort, chain, clnefrc, char, dir_clones, dir_samplekeys, file_samplekeys){
+Base_TILclone <- function(patient, sampcohort, chain, clnefrc, char){
     
     # Loading specific locus and sampcohort 4W, TIL, and baseline samples for patient
-    Load_data(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys)
+    Load_data(patient, sampcohort, chain, clnefrc)
     
     if(length(TIL_data$aaSeqCDR3) == 0){
         files <<- list.files(paste(dir_clones, "gDNA/CLONES_", chain, patient, "/", sep = ""))

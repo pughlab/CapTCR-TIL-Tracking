@@ -10,18 +10,15 @@
 # @param sample: the sample which is subjected to TIL clone calculation
 # @param expanded: boolean parameter, if TRUE the clones that are larger in the reference 
 #                  than the TIL-infusion will be selected. Default is FALSE
-# @param dir_clones: directory where clone files are located
-# @param dir_samplekeys: directory where the sample keys file is located
-# @param file_samplekeys: name of the sample keys file
 
-TIL_calc <- function(patient, sampcohort, chain, clnefrc, sample, expanded=FALSE, dir_clones, dir_samplekeys, file_samplekeys){
+TIL_calc <- function(patient, sampcohort, chain, clnefrc, sample, expanded=FALSE){
     
     #Loads longitudinal sample ordering
     samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
     options(scipen = 999)
     
     #Loads patient, sampcohort, chain specific data
-    Load_data(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys)
+    Load_data(patient, sampcohort, chain, clnefrc)
     
     # If a patient doesn't have a TIL file, it will use the TIL file from the related gDNA TIL data from the patient
     if(length(TIL_data$aaSeqCDR3) == 0){

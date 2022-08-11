@@ -7,15 +7,11 @@
 # @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
-# @param dir_clones: parent directory where clone files are located
-# @param dir_samplekeys: directory where the sample keys excel file are located
-# @param file_samplekeys: file name of the sample keys 
 
-DomClone <- function(patient, sampcohort, chain, clnefrc, 
-         dir_clones, dir_samplekeys, file_samplekeys){
+DomClone <- function(patient, sampcohort, chain, clnefrc){
   
   # Loads data for the speicif patient, sample cohort, and chain
-  Load_data(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys)
+  Load_data(patient, sampcohort, chain, clnefrc)
   samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
   
   # Creates a dataframe 'Hyperexpansive_Postinfusion' containing the post-infusion hyperexpansive clones

@@ -1,29 +1,18 @@
-############################
-# Clone Tracking for cfDNA #
-############################
+##################
+# Clone Tracking #
+##################
 
 # Plots and tracks the redundant TIL clones
 # @param patient: specific patient code 
 # @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
-# @param dir_clones: parent directory where clone files are located
-# @param dir_samplekeys: directory where the sample keys excel file are located
-# @param file_samplekeys: file name of the sample keys 
 # @param primary: desired sample to appear first (Baseline or TIL)
 
-ClonetrackPlot <- function(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys,
-                           file_samplekeys, primary){
+ClonetrackPlot <- function(patient, sampcohort, chain, clnefrc, primary){
   
   # Loading the data for the patient for a specific sampcohort, chain, and clone fraction
-  Load_data(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys)
-  
-  CDR3_colors <- read_csv(
-    file.path(
-      dir_clones,
-      "CDR3_colors.csv")
-  ) %>%
-    filter ( id %in% patient)
+  Load_data(patient, sampcohort, chain, clnefrc)
   
   # Assigning the sample order to the predefined lists created in the data load section
   samporder <- eval(as.name(paste(patient, sampcohort, sep="")))

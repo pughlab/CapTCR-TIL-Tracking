@@ -1,22 +1,18 @@
-###############
+##################
 # Plot Alignment #
-###############
+##################
 
 # Aligns the clone tracking plots with a single x-axis
 # @param patients: list of patients for plot alignment, could be high, med, or low 
 # @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
-# @param dir_clones: parent directory where clone files are located
-# @param dir_samplekeys: directory where the sample keys excel file are located
-# @param file_samplekeys: file name of the sample keys 
 # @param figure: figure wanting to be created (clonetrack, diversity, relative, or rel_div)
 # @param primary: desired sample to appear first (Baseline or TIL)
 # @param dir_output: directory to put the png output into
 # @param file_output: desired filename to output 
 
-alignment_fig <- function(patients, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys,
-                          file_samplekeys, figure, primary, dir_output, file_output){
+alignment_fig <- function(patients, sampcohort, chain, clnefrc, figure, primary, dir_output, file_output){
     
     # Creates a list of the number of samples for each patient and finds the patient with the maximum amount of samples
     lst <- list()
@@ -100,7 +96,7 @@ alignment_fig <- function(patients, sampcohort, chain, clnefrc, dir_clones, dir_
     png(file = paste(dir_output, file_output, ".png", sep=""),
         width = 400*max,
         height = 800*length(patients),
-        res=300)
+        res=3000)
    print(all_plots)
    dev.off()
 }

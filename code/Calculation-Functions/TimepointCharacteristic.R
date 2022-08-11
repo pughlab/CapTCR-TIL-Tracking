@@ -9,18 +9,15 @@
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 # @param char: The characteristic desired to be analyzed (Clonotypes, TCRCount, or Oligo)
 # @param sample: the sample which is used in the analysis
-# @param dir_clones: directory where clone files are located
-# @param dir_samplekeys: directory where the sample keys file is located
-# @param file_samplekeys: name of the sample keys file
 
-Timepoint_char <- function(patient, sampcohort, chain, clnefrc, char, sample, dir_clones, dir_samplekeys, file_samplekeys){
+Timepoint_char <- function(patient, sampcohort, chain, clnefrc, char, sample){
   
   # Loads longitudinal sample order
   samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
   options(scipen = 999)
   
   #Loads patient clone data
-  Load_data(patient, sampcohort, chain, clnefrc, dir_clones, dir_samplekeys, file_samplekeys)
+  Load_data(patient, sampcohort, chain, clnefrc)
   
   reference_data <- CDR3_fraction[which(CDR3_fraction$filename==sample),]
   
