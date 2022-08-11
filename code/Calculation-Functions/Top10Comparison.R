@@ -14,7 +14,7 @@
 Top104WComp <- function(patient, sampcohort, chain, clnefrc){
   
   # Loads in patient data
-  Load_data(patient, sampcohort, chain, clnefrc,)
+  Load_data(patient, sampcohort, chain, clnefrc)
   
   # Loading patient sample order
   samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
