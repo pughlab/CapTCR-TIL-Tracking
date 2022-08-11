@@ -92,7 +92,7 @@ alignment_fig <- function(patients, sampcohort, chain, clnefrc, figure, primary,
     png(file = paste(dir_output, file_output, ".png", sep=""),
         width = 400*max,
         height = 800*length(patients),
-        res=3000)
+        res=300)
    print(all_plots)
    dev.off()
 }

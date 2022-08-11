@@ -25,7 +25,8 @@ GeneralDataLoad <- function(dir_data){
   cassette_stats <<- read_csv(file.path(dir_data , "VJUsage.csv"))
   
   # Loading in the CDR3 colors dataset
-  CDR3_colors <- read_csv(file.path(CDR3_colors_datapath,CDR3_colors_filename))
+  CDR3_colors <- read_csv(file.path(dir_data,"CDR3_colors.csv"))
+  CDR3_colors <<- as.data.frame(CDR3_colors)
 }
 
 Load_data <- function(patient, sampcohort, chain, clnefrc){

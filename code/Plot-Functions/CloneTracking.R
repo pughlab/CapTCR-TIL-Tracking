@@ -49,6 +49,7 @@ ClonetrackPlot <- function(patient, sampcohort, chain, clnefrc, primary){
   }
   
   # Generates list of clones and assigns them to previously created distinct colour pallete
+  CDR3_colors <- CDR3_colors[which(CDR3_colors$id==patient),]
   CDR3_presentcolors <- CDR3_colors[which(CDR3_colors$colored_clns %in% CDR3_fraction$aaSeqCDR3),]
   colored_clns <- CDR3_presentcolors$colored_clns
   non_clns <- CDR3_fraction$aaSeqCDR3[!CDR3_fraction$aaSeqCDR3 %in% colored_clns]

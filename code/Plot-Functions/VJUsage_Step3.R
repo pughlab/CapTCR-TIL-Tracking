@@ -61,6 +61,7 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
             select ( Patient_id , Cycle , VJcombo ) %>%
             mutate ( VJcombo = str_replace ( VJcombo , "\\.", "_"))
     
+    aaSeqCDR3_colors <- CDR3_colors[which(CDR3_colors$id==patient),]
     ########################################################################
     ###MAKING A LIST TO STORE THE GRAPHS:
     #'''''''Begins here
@@ -171,6 +172,7 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
                 vjcass_vertices )
 
     }
+    
     #'''''''Ends here
     ########################################################################
     ###Adding features that define whether a circle should be filled or remain 
@@ -186,16 +188,16 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
                             vj <- str_split(V(graph_data[[i]])$name[j], pattern="\\.")[[1]][2]
                             p_clonotypes <- clonotypes[which(clonotypes$Cycle==cyc),]
                             p_clonotypes <- p_clonotypes[which(p_clonotypes$VJcombo==vj),]
-                            if((length(p_clonotypes$aaSeqCDR3)==1)&(length(which(p_clonotypes$aaSeqCDR3 %in% CDR3_colors$colored_clns==TRUE))==1)){
+                            if((length(p_clonotypes$aaSeqCDR3)==1)&(length(which(p_clonotypes$aaSeqCDR3 %in% aaSeqCDR3_colors$colored_clns==TRUE))==1)){
                                 print(p_clonotypes$aaSeqCDR3)
-                                V(graph_data[[i]])$color_status[j] <- which(CDR3_colors$colored_clns==p_clonotypes$aaSeqCDR3) + 2
+                                V(graph_data[[i]])$color_status[j] <- which(aaSeqCDR3_colors$colored_clns==p_clonotypes$aaSeqCDR3) + 2
                             }
                     }
                     else {
                             if (str_split(V(graph_data[[i]])$name[j] , pattern = "\\.")[[1]][2] %in% vj_dir){
                                 aaSeq <- toString(seq_translate(dna(str_split(V(graph_data[[i]])$name[j] , pattern = "\\.")[[1]][3])))
-                                if(aaSeq %in% CDR3_colors$colored_clns){
-                                    V(graph_data[[i]])$color_status [j] <- which(CDR3_colors$colored_clns==aaSeq) + 2
+                                if(aaSeq %in% aaSeqCDR3_colors$colored_clns){
+                                    V(graph_data[[i]])$color_status [j] <- which(aaSeqCDR3_colors$colored_clns==aaSeq) + 2
                                     }
                                 else{
                                    V(graph_data[[i]])$color_status [j] <- 2 
@@ -233,8 +235,8 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
                                               )
                                       )+
                     scale_fill_manual(values = c("transparent" , "grey",
-                                                 CDR3_colors$mycolors),
-                                      breaks = c(1:length(CDR3_colors$mycolors))
+                                                 aaSeqCDR3_colors$mycolors),
+                                      breaks = c(1:length(aaSeqCDR3_colors$mycolors))
                                       )+
               theme_graph()+
                     theme(legend.position = "None" ,
