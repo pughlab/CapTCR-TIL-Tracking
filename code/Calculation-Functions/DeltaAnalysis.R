@@ -21,30 +21,30 @@ DeltaA <- function(patient, sampcohort, chain, clnefrc, datapoint, first, second
     
     # If a patient doesn't have a TIL file, it will use the TIL file from the related gDNA TIL data from the patient
     if(length(TIL_data$aaSeqCDR3) == 0){
-        files <<- list.files(paste(dir_clones, "gDNA/CLONES_", chain, patient, "/", sep = ""))
-        infusion <- files[grep('fusion', files)]
-        len <<- length(samporder)
-        TIL_data <- data.frame()
-        TIL_data <- read.table(paste(dir_clones, "gDNA/CLONES_", chain, patient, "/", infusion, sep = ""), 
-                   header = TRUE, sep = "\t",
-                       stringsAsFactors = FALSE,
-                       na.strings = c("", "NA"))
-        TIL_data <- TIL_data[!duplicated(TIL_data$aaSeqCDR3),]
-        TIL_data <- cbind(cloneno = row.names(TIL_data), 
-                     filename = 'TIL Infusion Product', 
-                   TIL_data)
-        TIL_data <- TIL_data[, c("filename","aaSeqCDR3","cloneFraction", "cloneCount")]
-        # Subset to include only clonotypes with more than specified clonal fraction    
-        TIL_data <- TIL_data[TIL_data$cloneFraction > clnefrc,] 
-        # Append the singletons
-        TIL_data <- TIL_data[(TIL_data$cloneCount>1),]        
-        # Removes unproductive clonotypes  
-        TIL_data <- TIL_data[-c(grep("[*]", c(TIL_data$aaSeqCDR3, "CDR3*"))),]
-        TIL_data <- TIL_data[-c(grep("_", c(TIL_data$aaSeqCDR3, "CDR3*"))),]
-
-        # Readjusting clonal fraction values to spliced data
-        ProdcloneFrac(TIL_data)
-        TIL_data <- output_df
+      subset <- MiXCR_output[which(MiXCR_output$cohort=="gDNA" & MiXCR_output$patient==patient),]
+      infusion <- unique(subset[grep("infusion|Infusion", subset$filename),]$filename)
+      
+      TIL_data <- as.data.frame(subset[which(subset$filename==infusion),])
+      len <- length(samporder)
+      TIL_data <- TIL_data[!duplicated(TIL_data$aaSeqCDR3),]
+      TIL_data <- cbind(cloneno = row.names(TIL_data), 
+                        filename = 'TIL Infusion Product', 
+                        TIL_data)
+      TIL_data <- TIL_data[, c("filename","aaSeqCDR3","cloneFraction", "cloneCount")]
+      # Subset to include only clonotypes with more than specified clonal fraction    
+      TIL_data <- TIL_data[TIL_data$cloneFraction > clnefrc,] 
+      # Append the singletons
+      TIL_data <- TIL_data[(TIL_data$cloneCount>1),]        
+      # Removes unproductive clonotypes  
+      TIL_data <- TIL_data[-c(grep("[*]", c(TIL_data$aaSeqCDR3, "CDR3*"))),]
+      TIL_data <- TIL_data[-c(grep("_", c(TIL_data$aaSeqCDR3, "CDR3*"))),]
+      
+      # Readjusting clonal fraction values to spliced data
+      ProdcloneFrac(TIL_data)
+      TIL_data <- output_df
+      # Generating dataframe with added gDNA TIL Infusion product and updated y-axis order for plots
+      CDR3_fraction <- rbind(Base_data, TIL_data, FW_data)
+      samporder <- c(samporder[1],'TIL Infusion Product',samporder[2:len])
     }
     
     # Changes the name of the baseline to the first name in the sample order previously creates

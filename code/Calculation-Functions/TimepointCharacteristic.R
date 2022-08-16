@@ -14,8 +14,7 @@ Timepoint_char <- function(patient, sampcohort, chain, clnefrc, char, sample){
   
   # Loads longitudinal sample order
   samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
-  options(scipen = 999)
-  
+
   #Loads patient clone data
   Load_data(patient, sampcohort, chain, clnefrc)
   

@@ -2,7 +2,7 @@
 # Amount of TIL clones in Alternate Sample #
 ############################################
 
-# Calculating the amount of a sample's repertoire is taken up by TIL-related clones
+# Calculating the amount of a sample's repertoire that is taken up by TIL-related clones
 # @param patient: specific patient code 
 # @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
@@ -15,21 +15,17 @@ TIL_calc <- function(patient, sampcohort, chain, clnefrc, sample, expanded=FALSE
     
     #Loads longitudinal sample ordering
     samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
-    options(scipen = 999)
-    
+
     #Loads patient, sampcohort, chain specific data
     Load_data(patient, sampcohort, chain, clnefrc)
     
     # If a patient doesn't have a TIL file, it will use the TIL file from the related gDNA TIL data from the patient
     if(length(TIL_data$aaSeqCDR3) == 0){
-        files <<- list.files(paste(dir_clones, "gDNA/CLONES_", chain, patient, "/", sep = ""))
-        infusion <- files[grep('fusion', files)]
-        len <<- length(samporder)
-        TIL_data <- data.frame()
-        TIL_data <- read.table(paste(dir_clones, "gDNA/CLONES_", chain, patient, "/", infusion, sep = ""), 
-                   header = TRUE, sep = "\t",
-                       stringsAsFactors = FALSE,
-                       na.strings = c("", "NA"))
+      subset <- MiXCR_output[which(MiXCR_output$cohort=="gDNA" & MiXCR_output$patient==patient),]
+      infusion <- unique(subset[grep("infusion|Infusion", subset$filename),]$filename)
+      
+      TIL_data <- as.data.frame(subset[which(subset$filename==infusion),])
+        len <- length(samporder)
         TIL_data <- TIL_data[!duplicated(TIL_data$aaSeqCDR3),]
         TIL_data <- cbind(cloneno = row.names(TIL_data), 
                      filename = 'TIL Infusion Product', 
@@ -46,6 +42,9 @@ TIL_calc <- function(patient, sampcohort, chain, clnefrc, sample, expanded=FALSE
         # Readjusting clonal fraction values to spliced data
         ProdcloneFrac(TIL_data)
         TIL_data <- output_df
+        # Generating dataframe with added gDNA TIL Infusion product and updated y-axis order for plots
+        CDR3_fraction <- rbind(Base_data, TIL_data, FW_data)
+        samporder <- c(samporder[1],'TIL Infusion Product',samporder[2:len])
     }
     # Creates dataframe including the clones which are prevalent in both the reference and TIL-infusion sample
     reference_data <- CDR3_fraction[which(CDR3_fraction$filename==sample),]
