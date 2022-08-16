@@ -121,5 +121,4 @@ DeltaA <- function(patient, sampcohort, chain, clnefrc, datapoint, first, second
         
     }
     # Prints the resulting delta variable
-    print(delta)
 }

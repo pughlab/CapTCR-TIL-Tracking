@@ -41,7 +41,4 @@ Top104WComp <- function(patient, sampcohort, chain, clnefrc){
   TIL_cloneFraction <<- sum(Top104W$TIL_cloneFraction)/10
   Base_cloneFraction <<- sum(Top104W$Base_cloneFraction)/10
   Top104W_cloneFraction <<- sum(Top104W$cloneFraction)/10
-  print(TIL_cloneFraction)
-  print(Base_cloneFraction)
-  print(sum(Top104W$cloneFraction)/10)
 }

@@ -52,9 +52,6 @@ TCRConvergence <- function(patient, cohort, timepoint_order){
     
     for(CDR3 in unique(duplicated_cycle$aaSeqCDR3)){
         single_CDR3 <- duplicated_cycle[which(duplicated_cycle$aaSeqCDR3==CDR3),]
-        if(length(unique(single_CDR3$aaSeqCDR3))!=length(unique(single_CDR3$Variable))){
-            print("Variable Sequence Doesn't Match")
-            }
         }
     TCRConverg[i][[1]] <- sum(duplicated_cycle$cloneFraction)
     }

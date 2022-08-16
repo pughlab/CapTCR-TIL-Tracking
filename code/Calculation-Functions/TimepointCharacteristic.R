@@ -23,21 +23,17 @@ Timepoint_char <- function(patient, sampcohort, chain, clnefrc, char, sample){
   # Prints the total amount of TIL clones if specified by the user
   if(char=="Clonotypes"){
     Total <<- nrow(reference_data)
-    print(Total)
   }
   
   if(char=="TCRCount"){
     TCRCount <<- sum(reference_data$cloneCount)
-    print(TCRCount)
   }
   
   # Prints the fraction of clones >5% in the TIL sample if specified by the user
   if(char=="Oligo"){
     Sum_Oligo <<- sum(reference_data$cloneFraction)
-    print(Sum_Oligo)
   }
   if(char=="AvgCloneFrac"){
     AvgCloneFrac <<- sum(reference_data$cloneFraction)/nrow(reference_data)
-    print(AvgCloneFrac)
   }
 }

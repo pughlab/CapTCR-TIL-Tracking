@@ -53,5 +53,4 @@ Base_TILclone <- function(patient, sampcohort, chain, clnefrc, char){
         # Find the number of TIL-TCRs in the baseline sample
         result <- sum(Base_filtered_data$cloneCount)
     }
-    print(result)
 }
