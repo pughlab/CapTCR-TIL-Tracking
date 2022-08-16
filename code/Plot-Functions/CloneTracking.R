@@ -50,8 +50,6 @@ ClonetrackPlot <- function(patient, sampcohort, chain, clnefrc, primary){
   CDR3_presentcolors <- CDR3_colors[which(CDR3_colors$colored_clns %in% CDR3_fraction$aaSeqCDR3),]
   colored_clns <- CDR3_presentcolors$colored_clns
   non_clns <- CDR3_fraction$aaSeqCDR3[!CDR3_fraction$aaSeqCDR3 %in% colored_clns]
-  message("Total number of coloured clonotypes:")
-  print(length(colored_clns))
   mycolors <- CDR3_presentcolors$mycolors
   mycolors <- c(mycolors, rep("white", length(non_clns)))
   names(mycolors) <- c(colored_clns, non_clns)

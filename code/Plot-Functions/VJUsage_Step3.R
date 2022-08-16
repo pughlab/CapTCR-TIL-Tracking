@@ -189,7 +189,6 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
                             p_clonotypes <- clonotypes[which(clonotypes$Cycle==cyc),]
                             p_clonotypes <- p_clonotypes[which(p_clonotypes$VJcombo==vj),]
                             if((length(p_clonotypes$aaSeqCDR3)==1)&(length(which(p_clonotypes$aaSeqCDR3 %in% aaSeqCDR3_colors$colored_clns==TRUE))==1)){
-                                print(p_clonotypes$aaSeqCDR3)
                                 V(graph_data[[i]])$color_status[j] <- which(aaSeqCDR3_colors$colored_clns==p_clonotypes$aaSeqCDR3) + 2
                             }
                     }
