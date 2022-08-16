@@ -12,7 +12,7 @@
 # @param dir_output: directory to put the png output into
 # @param file_output: desired filename to output 
 
-alignment_fig <- function(patients, sampcohort, chain, clnefrc, figure, primary, dir_output, file_output){
+alignment_fig <- function(patients, sampcohort, chain, clnefrc, figure, primary, dir_output, file_output, clones=NULL){
     
     # Creates a list of the number of samples for each patient and finds the patient with the maximum amount of samples
     lst <- list()
@@ -43,7 +43,14 @@ alignment_fig <- function(patients, sampcohort, chain, clnefrc, figure, primary,
     for(i in 1:length(patients)){
         if(figure=="clonetrack"){
             ClonetrackPlot(width_df$patients[i], sampcohort, chain, clnefrc, primary)
-          }
+        }
+        if(figure=="clonetrack_cfDNA"){
+            cfDNA_clonetrack(width_df$patients[i], sampcohort, chain, clnefrc, primary)
+        }
+        if(figure=="cfDNAcorrel"){
+            cfDNA_correl(width_df$patients[i], chain, clnefrc, clones)
+            max <- max*(3^(1/length(patients)))
+        }
         if(figure=="diversity"){
             DivPlot(width_df$patients[i], sampcohort, chain, clnefrc, primary, 500)
           }

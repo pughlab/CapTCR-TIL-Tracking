@@ -74,7 +74,7 @@ Load_data <- function(patient, sampcohort, chain, clnefrc){
     }
     h <- h + 1
   }
-  if(patient=="TLML_26"){
+  if(patient=="TLML_26" & sampcohort=="gDNA"){
     CDR3_fraction <- CDR3_fraction[-c(which(CDR3_fraction$filename=='BL_2015_1')),]
   }
   

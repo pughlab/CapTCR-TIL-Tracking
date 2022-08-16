@@ -76,47 +76,63 @@ ReproduceSupplementaryData <- function(GitHub_path){
     TableS6_df[row, 5] <- Sum_Oligo
   }
   
-  # Generating Table S7 of the supplementary material
-  TableS7_df <- data.frame(matrix(NA, nrow=9, ncol=8))
-  colnames(TableS7_df) <- c("Patient", "Top 50% of TIL to 4W", "Top 50% of 4W to TIL", "Top 50% of BL to 4W",
-                            "Top 50% of 4W to BL", "Average basline clone fraction of top 10 4W clones",
-                            "Average infusion clone fraction of top 10 4W clones", "Average 4W clone fraction of top 10 clones")
-  TableS7_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+ # Generating Table S7 of the supplementary material
+  TableS7_df <- data.frame(matrix(NA, nrow=6, ncol=7))
+  colnames(TableS7_df) <- c("Patient", "TIL % in baseline", "TIL % in 4 week", "cfDNA % in gDNA baseline",
+                            "cfDNA % in gDNA 4 week", "Baseline cfDNA clone count", "4 week cfDNA clone count")
+  TableS7_df$Patient <- c("TLML_4_", "TLML_16", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
   for(row in 1:length(TableS7_df$Patient)){
     First3Time <- eval(as.name(paste(TableS7_df$Patient[row], "gDNA", sep="")))[1:3]
-    Top50.fx(TableS7_df$Patient[row], "gDNA", "TRB", 0, First3Time[2], First3Time[3])
-    TableS7_df[row, 2] <- ReferenceFrc
-    Top50.fx(TableS7_df$Patient[row], "gDNA", "TRB", 0, First3Time[3], First3Time[2])
-    TableS7_df[row, 3] <- ReferenceFrc
-    Top50.fx(TableS7_df$Patient[row], "gDNA", "TRB", 0, First3Time[1], First3Time[3])
-    TableS7_df[row, 4] <- ReferenceFrc
-    Top50.fx(TableS7_df$Patient[row], "gDNA", "TRB", 0, First3Time[3], First3Time[1])
-    TableS7_df[row, 5] <- ReferenceFrc
-    Top104WComp(TableS7_df$Patient[row], "gDNA", "TRB", 0)
-    TableS7_df[row, 6] <- Base_cloneFraction
-    TableS7_df[row, 7] <- TIL_cloneFraction
-    TableS7_df[row, 8] <- Top104W_cloneFraction
+    cfDNA_calc(TableS7_df$Patient[row], "TRB", 0, "TotalTIL&Background")
+    TableS7_df[row,2] <- result$Base_TIL
+    TableS7_df[row,3] <- result$FW_TIL
+    cfDNA_calc(TableS7_df$Patient[row], "TRB", 0, "gDNAOverlap")
+    TableS7_df[row, 4] <- result$gDNA_Base
+    TableS7_df[row, 5] <- result$gDNA_FW
+    Timepoint_char(TableS7_df$Patient[row], "cfDNA", "TRB", 0, "TCRCount", First3Time[1])
+    TableS7_df[row, 6] <- TCRCount
+    Timepoint_char(TableS7_df$Patient[row], "cfDNA", "TRB", 0, "TCRCount", First3Time[3])
+    TableS7_df[row, 7] <- TCRCount
   }
   
-  # Generating Table S8 of the supplementary material
-  TableS8_df <- data.frame(matrix(NA, nrow=9, ncol=9))
-  colnames(TableS8_df) <- c("Patient", "Apheresis / Baseline", "TIL Infusion Product", "4 Week sample", "FU1", "FU2", "FU3", "FU4", "FU5")
+ # Generating Table S8 of the supplementary material
+  TableS8_df <- data.frame(matrix(NA, nrow=9, ncol=8))
+  colnames(TableS8_df) <- c("Patient", "Top 50% of TIL to 4W", "Top 50% of 4W to TIL", "Top 50% of BL to 4W",
+                            "Top 50% of 4W to BL", "Average basline clone fraction of top 10 4W clones",
+                            "Average infusion clone fraction of top 10 4W clones", "Average 4W clone fraction of top 10 clones")
   TableS8_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
   for(row in 1:length(TableS8_df$Patient)){
-    DivCalc(TableS8_df$Patient[row], "gDNA", "TRB", 0)
-    if(TableS8_df$Patient[row] != "TLML_1_"){
-      TableS8_df[row,2:(length(Div_df$Diversity)+1)] <- Div_df$Diversity
+    First3Time <- eval(as.name(paste(TableS8_df$Patient[row], "gDNA", sep="")))[1:3]
+    Top50.fx(TableS8_df$Patient[row], "gDNA", "TRB", 0, First3Time[2], First3Time[3])
+    TableS8_df[row, 2] <- ReferenceFrc
+    Top50.fx(TableS8_df$Patient[row], "gDNA", "TRB", 0, First3Time[3], First3Time[2])
+    TableS8_df[row, 3] <- ReferenceFrc
+    Top50.fx(TableS8_df$Patient[row], "gDNA", "TRB", 0, First3Time[1], First3Time[3])
+    TableS8_df[row, 4] <- ReferenceFrc
+    Top50.fx(TableS8_df$Patient[row], "gDNA", "TRB", 0, First3Time[3], First3Time[1])
+    TableS8_df[row, 5] <- ReferenceFrc
+    Top104WComp(TableS8_df$Patient[row], "gDNA", "TRB", 0)
+    TableS8_df[row, 6] <- Base_cloneFraction
+    TableS8_df[row, 7] <- TIL_cloneFraction
+    TableS8_df[row, 8] <- Top104W_cloneFraction
+  }
+  
+  # Generating Table S9 of the supplementary material
+  TableS9_df <- data.frame(matrix(NA, nrow=9, ncol=9))
+  colnames(TableS9_df) <- c("Patient", "Apheresis / Baseline", "TIL Infusion Product", "4 Week sample", "FU1", "FU2", "FU3", "FU4", "FU5")
+  TableS9_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  for(row in 1:length(TableS9_df$Patient)){
+    DivCalc(TableS9_df$Patient[row], "gDNA", "TRB", 0)
+    if(TableS9_df$Patient[row] != "TLML_1_"){
+      TableS9_df[row,2:(length(Div_df$Diversity)+1)] <- Div_df$Diversity
     }
-    if(TableS8_df$Patient[row] == "TLML_1_"){
-      TableS8_df[row,2:(length(Div_df$Diversity)+2)] <- c(Div_df$Diversity[1], Div_df$Diversity[2], NA, Div_df$Diversity[3], Div_df$Diversity[4], Div_df$Diversity[5])
+    if(TableS9_df$Patient[row] == "TLML_1_"){
+      TableS9_df[row,2:(length(Div_df$Diversity)+2)] <- c(Div_df$Diversity[1], Div_df$Diversity[2], NA, Div_df$Diversity[3], Div_df$Diversity[4], Div_df$Diversity[5])
     }
     
   }
   
-  # Generating Table S9, S10, S11, and S12 of the supplementary material
-  TableS9_df <- data.frame(matrix(NA, nrow=9, ncol=9))
-  colnames(TableS9_df) <- c("Patient", "Apheresis / Baseline", "TIL Infusion Product", "4 Week sample", "FU1", "FU2", "FU3", "FU4", "FU5")
-  TableS9_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  # Generating Table S10, S11, S12, and S13 of the supplementary material
   TableS10_df <- data.frame(matrix(NA, nrow=9, ncol=9))
   colnames(TableS10_df) <- c("Patient", "Apheresis / Baseline", "TIL Infusion Product", "4 Week sample", "FU1", "FU2", "FU3", "FU4", "FU5")
   TableS10_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
@@ -126,20 +142,23 @@ ReproduceSupplementaryData <- function(GitHub_path){
   TableS12_df <- data.frame(matrix(NA, nrow=9, ncol=9))
   colnames(TableS12_df) <- c("Patient", "Apheresis / Baseline", "TIL Infusion Product", "4 Week sample", "FU1", "FU2", "FU3", "FU4", "FU5")
   TableS12_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
-  for(row in 1:length(TableS9_df$Patient)){
-    RichEvCalc(TableS9_df$Patient[row], "gDNA", "TRB", 0)
+  TableS13_df <- data.frame(matrix(NA, nrow=9, ncol=9))
+  colnames(TableS13_df) <- c("Patient", "Apheresis / Baseline", "TIL Infusion Product", "4 Week sample", "FU1", "FU2", "FU3", "FU4", "FU5")
+  TableS13_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  for(row in 1:length(TableS10_df$Patient)){
+    RichEvCalc(TableS10_df$Patient[row], "gDNA", "TRB", 0)
     Div_df$Diversity <- abs(Div_df$Diversity)
     if(TableS9_df$Patient[row] != "TLML_1_"){
-      TableS9_df[row, 2:(length(Div_df$Diversity)+1)] <- Div_df$Diversity
-      TableS10_df[row, 2:(length(Div_df$Richness)+1)] <- Div_df$Richness
-      TableS11_df[row, 2:(length(Div_df$Evenness)+1)] <- Div_df$Evenness
-      TableS12_df[row, 2:(length(Div_df$Clonality)+1)] <- Div_df$Clonality
+      TableS10_df[row, 2:(length(Div_df$Diversity)+1)] <- Div_df$Diversity
+      TableS11_df[row, 2:(length(Div_df$Richness)+1)] <- Div_df$Richness
+      TableS12_df[row, 2:(length(Div_df$Evenness)+1)] <- Div_df$Evenness
+      TableS13_df[row, 2:(length(Div_df$Clonality)+1)] <- Div_df$Clonality
     }
-    if(TableS9_df$Patient[row] == "TLML_1_"){
-      TableS9_df[row, 2:(length(Div_df$Diversity)+2)] <- c(Div_df$Diversity[1], Div_df$Diversity[2], NA, Div_df$Diversity[3], Div_df$Diversity[4], Div_df$Diversity[5])
-      TableS10_df[row, 2:(length(Div_df$Richness)+2)] <-c(Div_df$Richness[1], Div_df$Richness[2], NA, Div_df$Richness[3], Div_df$Richness[4], Div_df$Richness[5])
-      TableS11_df[row, 2:(length(Div_df$Evenness)+2)] <- c(Div_df$Evenness[1], Div_df$Evenness[2], NA, Div_df$Evenness[3], Div_df$Evenness[4], Div_df$Evenness[5])
-      TableS12_df[row, 2:(length(Div_df$Clonality)+2)] <- c(Div_df$Clonality[1], Div_df$Clonality[2], NA, Div_df$Clonality[3], Div_df$Clonality[4], Div_df$Clonality[5])
+    if(TableS10_df$Patient[row] == "TLML_1_"){
+      TableS10_df[row, 2:(length(Div_df$Diversity)+2)] <- c(Div_df$Diversity[1], Div_df$Diversity[2], NA, Div_df$Diversity[3], Div_df$Diversity[4], Div_df$Diversity[5])
+      TableS11_df[row, 2:(length(Div_df$Richness)+2)] <-c(Div_df$Richness[1], Div_df$Richness[2], NA, Div_df$Richness[3], Div_df$Richness[4], Div_df$Richness[5])
+      TableS12_df[row, 2:(length(Div_df$Evenness)+2)] <- c(Div_df$Evenness[1], Div_df$Evenness[2], NA, Div_df$Evenness[3], Div_df$Evenness[4], Div_df$Evenness[5])
+      TableS13_df[row, 2:(length(Div_df$Clonality)+2)] <- c(Div_df$Clonality[1], Div_df$Clonality[2], NA, Div_df$Clonality[3], Div_df$Clonality[4], Div_df$Clonality[5])
     }
   }
   
@@ -156,6 +175,7 @@ ReproduceSupplementaryData <- function(GitHub_path){
   addWorksheet(SupplementaryData, "Table S10")
   addWorksheet(SupplementaryData, "Table S11")
   addWorksheet(SupplementaryData, "Table S12")
+  addWorksheet(SupplementaryData, "Table S13")
   writeData(SupplementaryData, sheet="Table S3", x=TableS3_df)
   writeData(SupplementaryData, sheet="Table S4", x=TableS4_df)
   writeData(SupplementaryData, sheet="Table S5", x=TableS5_df)
@@ -166,6 +186,7 @@ ReproduceSupplementaryData <- function(GitHub_path){
   writeData(SupplementaryData, sheet="Table S10", x=TableS10_df)
   writeData(SupplementaryData, sheet="Table S11", x=TableS11_df)
   writeData(SupplementaryData, sheet="Table S12", x=TableS12_df)
+  writeData(SupplementaryData, sheet="Table S13", x=TableS13_df)
   saveWorkbook(SupplementaryData, paste(GitHub_path, "results/SupplementaryData_reproduced.xlsx", sep=""))
 }
 ReproduceSupplementaryData(GitHub_path)
@@ -227,8 +248,6 @@ ReproduceFigures <- function(GitHub_path){
   VJTLML_29 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_29_.png", sep=""))
   FigOverlay <- image_read(paste(GitHub_path, "data/VJFigOverlay.png", sep=""))
   
-  
-  
   png(paste(GitHub_path, "results/VJUsage_reproduced.png", sep=""), width = 5500, height = 6000, units = "px")
   plot.new()
   plot.window(xlim=c(0, 5500), ylim=c(0, 6000))
@@ -254,5 +273,52 @@ ReproduceFigures <- function(GitHub_path){
   unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_26_.png", sep=""))
   unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_29_.png", sep=""))
 
-  }
+  # Fetching cfDNA plots
+  low_exp <- c("TLML_4_", "TLML_20")
+  high_exp <- c("TLML_29", "TLML_26", "TLML_22", "TLML_16")
+  alignment_fig(low_exp, "cfDNA", "TRB", 0, "clonetrack_cfDNA", "Baseline", paste(GitHub_path, "data/",sep=""), "clonetrack_cfDNA_lowexp")
+  alignment_fig(high_exp, "cfDNA", "TRB", 0, "clonetrack_cfDNA", "Baseline", paste(GitHub_path, "data/",sep=""), "clonetrack_cfDNA_highexp")
+  alignment_fig(low_exp, "gDNA", "TRB", 0, "clonetrack_cfDNA", "Baseline", paste(GitHub_path, "data/",sep=""), "clonetrack_gDNA_lowexp")
+  alignment_fig(high_exp, "gDNA", "TRB", 0, "clonetrack_cfDNA", "Baseline", paste(GitHub_path, "data/",sep=""), "clonetrack_gDNA_highexp")
+  alignment_fig(low_exp, "cfDNA", "TRB", 0, "cfDNAcorrel", "Baseline", paste(GitHub_path, "data/",sep=""), "scatter_TIL_lowexp", clones ="TIL")
+  alignment_fig(high_exp, "cfDNA", "TRB", 0, "cfDNAcorrel", "Baseline", paste(GitHub_path, "data/",sep=""), "scatter_TIL_highexp", clones = "TIL")
+  alignment_fig(low_exp, "cfDNA", "TRB", 0, "cfDNAcorrel", "Baseline", paste(GitHub_path, "data/",sep=""), "scatter_back_lowexp", clones = "Background")
+  alignment_fig(high_exp, "cfDNA", "TRB", 0, "cfDNAcorrel", "Baseline", paste(GitHub_path, "data/",sep=""), "scatter_back_highexp", clones = "Background")
+  
+  # Reading and exporting cfDNA plots
+  clonetrack_cfDNA_lowexp <- image_read(paste0(GitHub_path, "data/clonetrack_cfDNA_lowexp.png"))
+  clonetrack_cfDNA_highexp <- image_read(paste0(GitHub_path, "data/clonetrack_cfDNA_highexp.png"))
+  clonetrack_gDNA_lowexp <- image_read(paste0(GitHub_path, "data/clonetrack_gDNA_lowexp.png"))
+  clonetrack_gDNA_highexp <- image_read(paste0(GitHub_path, "data/clonetrack_gDNA_highexp.png"))
+  scatter_TIL_lowexp <- image_read(paste0(GitHub_path, "data/scatter_TIL_lowexp.png"))
+  scatter_TIL_highexp <- image_read(paste0(GitHub_path, "data/scatter_TIL_highexp.png"))
+  scatter_back_lowexp <- image_read(paste0(GitHub_path, "data/scatter_back_lowexp.png"))
+  scatter_back_highexp <- image_read(paste0(GitHub_path, "data/scatter_back_highexp.png"))
+  FigOverlay <- image_read(paste0(GitHub_path, "data/cfDNAFigOverlay.png"))
+  
+  png(paste(GitHub_path, "results/cfDNA_reproduced.png", sep=""), width = 11000, height = 6000, units = "px")
+  plot.new()
+  plot.window(xlim=c(0, 11000), ylim=c(0, 6000))
+  rasterImage(clonetrack_cfDNA_lowexp, xleft=1321, ybottom=4224, xright=2043  , ytop=5668)
+  rasterImage(clonetrack_cfDNA_highexp, xleft=1321, ybottom=945, xright=2050  , ytop=3861)
+  rasterImage(clonetrack_gDNA_lowexp, xleft=2614, ybottom=4224, xright=4436  , ytop=5682)
+  rasterImage(clonetrack_gDNA_highexp, xleft=2625, ybottom=941, xright=5532  , ytop=3847)
+  rasterImage(clonetrack_cfDNA_lowexp, xleft=1321, ybottom=4224, xright=2043  , ytop=5668)
+  rasterImage(scatter_TIL_lowexp, xleft=5988, ybottom=4246, xright=8132  , ytop=5676)
+  rasterImage(scatter_TIL_highexp, xleft=5988, ybottom=945, xright=8126 , ytop=3796)
+  rasterImage(scatter_back_lowexp, xleft=8643, ybottom=4274, xright=10784 , ytop=5701)
+  rasterImage(scatter_back_highexp, xleft=8636, ybottom=924, xright=10784 , ytop=3788)
+  rasterImage(FigOverlay, xleft=0 , ybottom=0 , xright=11000 , ytop=6000)
+  dev.off()
+  
+  unlink(paste(GitHub_path, "data/clonetrack_cfDNA_lowexp.png", sep=""))
+  unlink(paste(GitHub_path, "data/clonetrack_cfDNA_highexp.png", sep=""))
+  unlink(paste(GitHub_path, "data/clonetrack_gDNA_lowexp.png", sep=""))
+  unlink(paste(GitHub_path, "data/clonetrack_gDNA_highexp.png", sep=""))
+  unlink(paste(GitHub_path, "data/scatter_TIL_lowexp.png", sep=""))
+  unlink(paste(GitHub_path, "data/scatter_TIL_highexp.png", sep=""))
+  unlink(paste(GitHub_path, "data/scatter_back_lowexp.png", sep=""))
+  unlink(paste(GitHub_path, "data/scatter_back_highexp.png", sep=""))
+  
+}
 ReproduceFigures(GitHub_path)
