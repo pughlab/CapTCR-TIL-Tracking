@@ -8,7 +8,7 @@
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 # @param dir_data: parent directory where data is stored
-dir_data <- "/Users/cameronkerr/CapTCRRepo/CapTCR-TIL-Tracking/data/"
+dir_data <- dir_main
 GeneralDataLoad <- function(dir_data){
   # Loading in MiXCR output file
   MiXCR_output <<- read_xlsx(paste0(dir_data,"mixcr_output.xlsx"))
