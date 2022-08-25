@@ -4,18 +4,17 @@
 
 # Plots and tracks the relative abundance of large and hyperexpansive clones
 # @param patient: specific patient code 
-# @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
+# @param sampcohort: Desired sample cohort, could be DNA, RNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
-# @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 # @param primary: desired sample to appear first (Baseline or TIL)
 
-RelPlot <- function(patient, sampcohort, chain, clnefrc, primary){
-
-    # Loads patient data
-    Load_data(patient, sampcohort, chain, clnefrc)
+RelPlot <- function(patient, sampcohort, chain, primary){
+  
+    # Loading CDR3_fraction
+    CDR3_fraction <- eval(as.name(paste0(patient, sampcohort)))
     
-    # Creates longitudinally ordered sample list
-    samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
+    # Setting the longitudinal order of the samples for patient
+    samporder <- eval(as.name(paste0(patient, sampcohort, "_samporder")))
       
     # Creates outline of relative abundance dataframe
     Rel_df <- data.frame(matrix(NA, nrow=length(samporder), ncol=3))
@@ -46,7 +45,6 @@ RelPlot <- function(patient, sampcohort, chain, clnefrc, primary){
     levels(Rel_df$samporder) <- c(samporder)
   
     Rel_df <<- Rel_df
-    
     
     # Creates relative abundance 'myp' plot global variable
     p <<- ggplot(Rel_df, aes(x=samporder, y=count, fill=type, alpha=0.5)) +

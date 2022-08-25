@@ -6,17 +6,18 @@
 # @param patient: specific patient code 
 # @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
-# @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 
-Base_Position <- function(patient,sampcohort, chain, clnefrc){
+Base_Position <- function(patient,sampcohort, chain){
 
-  # Load data for the specific patient, sample cohort, and chain
-  Load_data(patient,sampcohort, chain, clnefrc)
-  samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
+  # Loading CDR3_fraction
+  CDR3_fraction <- eval(as.name(paste0(patient, sampcohort)))
+  
+  # Setting the longitudinal order of the samples for patient
+  samporder <- eval(as.name(paste0(patient, sampcohort, "_samporder")))
   
   # Creates a dataframe of the post-infusion TIL clones
   PI_df <- CDR3_fraction[which(CDR3_fraction$filename %in% samporder[3:length(samporder)]),]
-  PI_df <- PI_df[which(PI_df$aaSeqCDR3 %in% TIL_data$aaSeqCDR3==TRUE),]
+  PI_df <- PI_df[which(PI_df$aaSeqCDR3 %in% eval(as.name(paste0(patient, sampcohort, "_", samporder[2])))$aaSeqCDR3==TRUE),]
   # Creates a new dataframe 'PI_clonefraction' consisting of a clonotype's average post-infusion clone fraction
   PI_clonefraction <- data.frame(matrix(0, ncol=2, nrow=length(unique(PI_df$aaSeqCDR3))))
   colnames(PI_clonefraction) <- c("aaSeqCDR3", "AvgPICloneFraction")
@@ -26,7 +27,7 @@ Base_Position <- function(patient,sampcohort, chain, clnefrc){
   }
   
   # Creates a dataframe of the pre-infusion TIL clones
-  TIL_BL <- Base_data[which(Base_data$aaSeqCDR3 %in% TIL_data$aaSeqCDR3==TRUE),]
+  TIL_BL <- eval(as.name(paste0(patient, sampcohort, "_", samporder[1])))[which(eval(as.name(paste0(patient, sampcohort, "_", samporder[1])))$aaSeqCDR3 %in% eval(as.name(paste0(patient, sampcohort, "_", samporder[2])))$aaSeqCDR3==TRUE),]
   # Adds a column in the 'PI_clonefraction' dataframe consisting of the position of the clone in the baseline 
   PI_clonefraction$BL_position <- NA
   for(row in 1:length(PI_clonefraction$aaSeqCDR3)){

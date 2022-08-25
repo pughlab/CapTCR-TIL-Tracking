@@ -1,5 +1,5 @@
 # Loading scripts
-GitHub_path <- paste0(getwd(), "/")
+GitHub_path <- readline(prompt = "Enter path to CapTCR-TIL-Tracking (include final '/'):")
 dir_main <- paste(GitHub_path, "data/", sep="")
 
 # Generating list of relevant R scripts from GitHub repo and then loading in functions and libraries
@@ -10,7 +10,7 @@ for(script in R_scripts){
 }
 
 # Loading MiXCR, sample keys, and CDR3 colors data
-GeneralDataLoad(dir_main)
+Initialize(dir_main, c("baseline", "infusion", "4W", "FU_01", "FU_02", "FU_03", "FU_04", "FU_05"))
 
 # Reproduces all data from the supplementary data 
 ReproduceSupplementaryData <- function(GitHub_path){
@@ -18,25 +18,26 @@ ReproduceSupplementaryData <- function(GitHub_path){
   # Generating Table S3 of the supplementary material
   message("Creating Table S3")
   TableS3_df <- data.frame(matrix(NA, nrow=9, ncol=9))
-  colnames(TableS3_df) <- c("Patient","baseline_apheresis", "infusion", "4W", "FU1", "FU2", "FU3", "FU4", "FU5")
-  TableS3_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  colnames(TableS3_df) <- c("Patient", "baseline", "infusion", "4W", "FU_01", "FU_02", "FU_03", "FU_04", "FU_05")
+  TableS3_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16_", "TLML_18_", "TLML_20_", "TLML_22_", "TLML_26_", "TLML_29_")
   pb <- txtProgressBar(min = 0,max = length(TableS3_df$Patient),style = 3,   width = 50,char = "=")
   for(row in 1:length(TableS3_df$Patient)){
     CDR3perVJ(TableS3_df$Patient[row], "DNA", colnames(TableS3_df)[2:ncol(TableS3_df)])
     sorted_df <- total_df %>% arrange(factor(Cycle, levels = colnames(TableS3_df)[2:ncol(TableS3_df)]))
-    TableS3_df[row, 2:length(TableS3_df)] <- sorted_df$AverageCDR3
     if(TableS3_df$Patient[row] == "TLML_1_"){
-      TableS3_df[row, 2:length(TableS3_df)] <- c(sorted_df$AverageCDR3[1:2], NA, sorted_df$AverageCDR3[3:(length(sorted_df$AverageCDR3)-1)])
+      TableS3_df[row, 2:(length(sorted_df$Cycle)+2)] <- c(sorted_df$AverageCDR3[1:2], NA, sorted_df$AverageCDR3[3:(length(sorted_df$AverageCDR3))])
+    } else {
+      TableS3_df[row, 2:(length(sorted_df$Cycle)+1)] <- sorted_df$AverageCDR3
     }
     setTxtProgressBar(pb, row)
   }
   close(pb)
-  # Generating Table S4 of the supplementary material
   
+  # Generating Table S4 of the supplementary material
   message("Creating Table S4")
   TableS4_df <- data.frame(matrix(NA, nrow=9, ncol=9))
-  colnames(TableS4_df) <- c("Patient","baseline_apheresis", "infusion", "4W", "FU1", "FU2", "FU3", "FU4", "FU5")
-  TableS4_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  colnames(TableS4_df) <- c("Patient", "baseline", "infusion", "4W", "FU_01", "FU_02", "FU_03", "FU_04", "FU_05")
+  TableS4_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16_", "TLML_18_", "TLML_20_", "TLML_22_", "TLML_26_", "TLML_29_")
   pb <- txtProgressBar(min = 0,max = length(TableS4_df$Patient),style = 3,   width = 50,char = "=")
   for(row in 1:length(TableS4_df$Patient)){
     TCRConvergence(TableS4_df$Patient[row], "DNA", colnames(TableS4_df)[2:ncol(TableS4_df)])
@@ -45,7 +46,7 @@ ReproduceSupplementaryData <- function(GitHub_path){
       TableS4_df[row, 2:(length(sorted_df)+1)] <- sorted_df
     }
     if(TableS4_df$Patient[row] == "TLML_1_"){
-      sorted_df <- TCRConverg[c("baseline_apheresis", "infusion", colnames(TableS4_df)[5:(length(TCRConverg)+2)])]
+      sorted_df <- TCRConverg[c("baseline", "infusion", colnames(TableS4_df)[5:(length(TCRConverg)+2)])]
       TableS4_df[row, 2:(length(sorted_df)+2)] <- c(sorted_df[1], sorted_df[2], NA, sorted_df[3], sorted_df[4], sorted_df[5])
     }
     setTxtProgressBar(pb, row)
@@ -55,16 +56,16 @@ ReproduceSupplementaryData <- function(GitHub_path){
   # Generating Table S5 of the supplementary material
   message("Creating Table S5")
   TableS5_df <- data.frame(matrix(NA, nrow=9, ncol=4))
-  colnames(TableS5_df) <- c("Patient","baseline_apheresis", "4W", "4W_expanded")
-  TableS5_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  colnames(TableS5_df) <- c("Patient","baseline", "4W", "4W_expanded")
+  TableS5_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16_", "TLML_18_", "TLML_20_", "TLML_22_", "TLML_26_", "TLML_29_")
   pb <- txtProgressBar(min = 0,max = length(TableS5_df$Patient),style = 3,   width = 50,char = "=")
   for(row in 1:length(TableS5_df$Patient)){
-    First3Time <- eval(as.name(paste(TableS5_df$Patient[row], "gDNA", sep="")))[1:3]
-    TIL_calc(TableS5_df$Patient[row], "gDNA", "TRB", 0, First3Time[1], expanded=FALSE)
+    First3Time <- eval(as.name(paste(TableS5_df$Patient[row], "DNA", "_samporder", sep="")))[1:3]
+    TIL_calc(TableS5_df$Patient[row], "DNA", "TRB", First3Time[1], expanded=FALSE)
     TableS5_df[row, 2] <- response
-    TIL_calc(TableS5_df$Patient[row], "gDNA", "TRB", 0, First3Time[3], expanded=FALSE)
+    TIL_calc(TableS5_df$Patient[row], "DNA", "TRB", First3Time[3], expanded=FALSE)
     TableS5_df[row, 3] <- response
-    TIL_calc(TableS5_df$Patient[row], "gDNA", "TRB", 0, First3Time[3], expanded=TRUE)
+    TIL_calc(TableS5_df$Patient[row], "DNA", "TRB", First3Time[3], expanded=TRUE)
     TableS5_df[row, 4] <- response
     setTxtProgressBar(pb, row)
   }
@@ -74,17 +75,17 @@ ReproduceSupplementaryData <- function(GitHub_path){
   message("Creating Table S6")
   TableS6_df <- data.frame(matrix(NA, nrow=9, ncol=5))
   colnames(TableS6_df) <- c("Patient","Amount of >5% clones baseline", "Amount of >0.5% clones baseline", "Amount of >5% clones infusion", "Amount of >5% clones 4W")
-  TableS6_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  TableS6_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16_", "TLML_18_", "TLML_20_", "TLML_22_", "TLML_26_", "TLML_29_")
   pb <- txtProgressBar(min = 0,max = length(TableS6_df$Patient),style = 3,   width = 50,char = "=")
   for(row in 1:length(TableS6_df$Patient)){
-    First3Time <- eval(as.name(paste(TableS6_df$Patient[row], "gDNA", sep="")))[1:3]
-    Timepoint_char(TableS6_df$Patient[row], "gDNA", "TRB", 0.05, "Oligo", First3Time[1])
+    First3Time <- eval(as.name(paste(TableS6_df$Patient[row], "DNA", "_samporder", sep="")))[1:3]
+    Timepoint_char(TableS6_df$Patient[row], "DNA", "TRB", 0.05, "Oligo", First3Time[1])
     TableS6_df[row, 2] <- Sum_Oligo
-    Timepoint_char(TableS6_df$Patient[row], "gDNA", "TRB", 0.005, "Oligo", First3Time[1])
+    Timepoint_char(TableS6_df$Patient[row], "DNA", "TRB", 0.005, "Oligo", First3Time[1])
     TableS6_df[row, 3] <- Sum_Oligo
-    Timepoint_char(TableS6_df$Patient[row], "gDNA", "TRB", 0.05, "Oligo", First3Time[2])
+    Timepoint_char(TableS6_df$Patient[row], "DNA", "TRB", 0.05, "Oligo", First3Time[2])
     TableS6_df[row, 4] <- Sum_Oligo
-    Timepoint_char(TableS6_df$Patient[row], "gDNA", "TRB", 0.05, "Oligo", First3Time[3])
+    Timepoint_char(TableS6_df$Patient[row], "DNA", "TRB", 0.05, "Oligo", First3Time[3])
     TableS6_df[row, 5] <- Sum_Oligo
     setTxtProgressBar(pb, row)
   }
@@ -95,19 +96,19 @@ ReproduceSupplementaryData <- function(GitHub_path){
   TableS7_df <- data.frame(matrix(NA, nrow=6, ncol=7))
   colnames(TableS7_df) <- c("Patient", "TIL % in baseline", "TIL % in 4 week", "cfDNA % in gDNA baseline",
                             "cfDNA % in gDNA 4 week", "Baseline cfDNA clone count", "4 week cfDNA clone count")
-  TableS7_df$Patient <- c("TLML_4_", "TLML_16", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  TableS7_df$Patient <- c("TLML_4_", "TLML_16_", "TLML_20_", "TLML_22_", "TLML_26_", "TLML_29_")
   pb <- txtProgressBar(min = 0,max = length(TableS7_df$Patient),style = 3,   width = 50,char = "=")
   for(row in 1:length(TableS7_df$Patient)){
-    First3Time <- eval(as.name(paste(TableS7_df$Patient[row], "gDNA", sep="")))[1:3]
-    cfDNA_calc(TableS7_df$Patient[row], "TRB", 0, "TotalTIL&Background")
+    First3Time_cfDNA <- eval(as.name(paste(TableS7_df$Patient[row], "cfDNA", "_samporder", sep="")))
+    cfDNA_calc(TableS7_df$Patient[row], "TRB", "TotalTIL&Background")
     TableS7_df[row,2] <- result$Base_TIL
     TableS7_df[row,3] <- result$FW_TIL
-    cfDNA_calc(TableS7_df$Patient[row], "TRB", 0, "gDNAOverlap")
+    cfDNA_calc(TableS7_df$Patient[row], "TRB", "gDNAOverlap")
     TableS7_df[row, 4] <- result$gDNA_Base
     TableS7_df[row, 5] <- result$gDNA_FW
-    Timepoint_char(TableS7_df$Patient[row], "cfDNA", "TRB", 0, "TCRCount", First3Time[1])
+    Timepoint_char(TableS7_df$Patient[row], "cfDNA", "TRB", 0, "TCRCount", First3Time_cfDNA[1])
     TableS7_df[row, 6] <- TCRCount
-    Timepoint_char(TableS7_df$Patient[row], "cfDNA", "TRB", 0, "TCRCount", First3Time[3])
+    Timepoint_char(TableS7_df$Patient[row], "cfDNA", "TRB", 0, "TCRCount", First3Time_cfDNA[2])
     TableS7_df[row, 7] <- TCRCount
     setTxtProgressBar(pb, row)
   }
@@ -119,19 +120,19 @@ ReproduceSupplementaryData <- function(GitHub_path){
   colnames(TableS8_df) <- c("Patient", "Top 50% of TIL to 4W", "Top 50% of 4W to TIL", "Top 50% of BL to 4W",
                             "Top 50% of 4W to BL", "Average basline clone fraction of top 10 4W clones",
                             "Average infusion clone fraction of top 10 4W clones", "Average 4W clone fraction of top 10 clones")
-  TableS8_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  TableS8_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16_", "TLML_18_", "TLML_20_", "TLML_22_", "TLML_26_", "TLML_29_")
   pb <- txtProgressBar(min = 0,max = length(TableS8_df$Patient),style = 3,   width = 50,char = "=")
   for(row in 1:length(TableS8_df$Patient)){
-    First3Time <- eval(as.name(paste(TableS8_df$Patient[row], "gDNA", sep="")))[1:3]
-    Top50.fx(TableS8_df$Patient[row], "gDNA", "TRB", 0, First3Time[2], First3Time[3])
+    First3Time <- eval(as.name(paste(TableS8_df$Patient[row], "DNA", "_samporder", sep="")))[1:3]
+    Top50.fx(TableS8_df$Patient[row], "DNA", "TRB", First3Time[2], First3Time[3])
     TableS8_df[row, 2] <- ReferenceFrc
-    Top50.fx(TableS8_df$Patient[row], "gDNA", "TRB", 0, First3Time[3], First3Time[2])
+    Top50.fx(TableS8_df$Patient[row], "DNA", "TRB", First3Time[3], First3Time[2])
     TableS8_df[row, 3] <- ReferenceFrc
-    Top50.fx(TableS8_df$Patient[row], "gDNA", "TRB", 0, First3Time[1], First3Time[3])
+    Top50.fx(TableS8_df$Patient[row], "DNA", "TRB", First3Time[1], First3Time[3])
     TableS8_df[row, 4] <- ReferenceFrc
-    Top50.fx(TableS8_df$Patient[row], "gDNA", "TRB", 0, First3Time[3], First3Time[1])
+    Top50.fx(TableS8_df$Patient[row], "DNA", "TRB", First3Time[3], First3Time[1])
     TableS8_df[row, 5] <- ReferenceFrc
-    Top104WComp(TableS8_df$Patient[row], "gDNA", "TRB", 0)
+    Top104WComp(TableS8_df$Patient[row], "DNA", "TRB")
     TableS8_df[row, 6] <- Base_cloneFraction
     TableS8_df[row, 7] <- TIL_cloneFraction
     TableS8_df[row, 8] <- Top104W_cloneFraction
@@ -142,11 +143,11 @@ ReproduceSupplementaryData <- function(GitHub_path){
   # Generating Table S9 of the supplementary material
   message("Creating Table S9")
   TableS9_df <- data.frame(matrix(NA, nrow=9, ncol=9))
-  colnames(TableS9_df) <- c("Patient", "Apheresis / Baseline", "TIL Infusion Product", "4 Week sample", "FU1", "FU2", "FU3", "FU4", "FU5")
-  TableS9_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  colnames(TableS9_df) <- c("Patient", "baseline", "infusion", "4W", "FU_01", "FU_02", "FU_03", "FU_04", "FU_05")
+  TableS9_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16_", "TLML_18_", "TLML_20_", "TLML_22_", "TLML_26_", "TLML_29_")
   pb <- txtProgressBar(min = 0,max = length(TableS9_df$Patient),style = 3,   width = 50,char = "=")
   for(row in 1:length(TableS9_df$Patient)){
-    DivCalc(TableS9_df$Patient[row], "gDNA", "TRB", 0)
+    DivCalc(TableS9_df$Patient[row], "DNA", "TRB")
     if(TableS9_df$Patient[row] != "TLML_1_"){
       TableS9_df[row,2:(length(Div_df$Diversity)+1)] <- Div_df$Diversity
     }
@@ -160,20 +161,20 @@ ReproduceSupplementaryData <- function(GitHub_path){
   # Generating Table S10, S11, S12, and S13 of the supplementary material
   message("Creating Table S10-S13")
   TableS10_df <- data.frame(matrix(NA, nrow=9, ncol=9))
-  colnames(TableS10_df) <- c("Patient", "Apheresis / Baseline", "TIL Infusion Product", "4 Week sample", "FU1", "FU2", "FU3", "FU4", "FU5")
-  TableS10_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  colnames(TableS10_df) <- c("Patient", "baseline", "infusion", "4W", "FU_01", "FU_02", "FU_03", "FU_04", "FU_05")
+  TableS10_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16_", "TLML_18_", "TLML_20_", "TLML_22_", "TLML_26_", "TLML_29_")
   TableS11_df <- data.frame(matrix(NA, nrow=9, ncol=9))
-  colnames(TableS11_df) <- c("Patient", "Apheresis / Baseline", "TIL Infusion Product", "4 Week sample", "FU1", "FU2", "FU3", "FU4", "FU5")
-  TableS11_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  colnames(TableS11_df) <- c("Patient", "baseline", "infusion", "4W", "FU_01", "FU_02", "FU_03", "FU_04", "FU_05")
+  TableS11_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16_", "TLML_18_", "TLML_20_", "TLML_22_", "TLML_26_", "TLML_29_")
   TableS12_df <- data.frame(matrix(NA, nrow=9, ncol=9))
-  colnames(TableS12_df) <- c("Patient", "Apheresis / Baseline", "TIL Infusion Product", "4 Week sample", "FU1", "FU2", "FU3", "FU4", "FU5")
-  TableS12_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  colnames(TableS12_df) <- c("Patient", "baseline", "infusion", "4W", "FU_01", "FU_02", "FU_03", "FU_04", "FU_05")
+  TableS12_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16_", "TLML_18_", "TLML_20_", "TLML_22_", "TLML_26_", "TLML_29_")
   TableS13_df <- data.frame(matrix(NA, nrow=9, ncol=9))
-  colnames(TableS13_df) <- c("Patient", "Apheresis / Baseline", "TIL Infusion Product", "4 Week sample", "FU1", "FU2", "FU3", "FU4", "FU5")
-  TableS13_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16", "TLML_18", "TLML_20", "TLML_22", "TLML_26", "TLML_29")
+  colnames(TableS13_df) <- c("Patient", "baseline", "infusion", "4W", "FU_01", "FU_02", "FU_03", "FU_04", "FU_05")
+  TableS13_df$Patient <- c("TLML_1_", "TLML_4_", "TLML_7_", "TLML_16_", "TLML_18_", "TLML_20_", "TLML_22_", "TLML_26_", "TLML_29_")
   pb <- txtProgressBar(min = 0,max = length(TableS10_df$Patient),style = 3,   width = 50,char = "=")
   for(row in 1:length(TableS10_df$Patient)){
-    RichEvCalc(TableS10_df$Patient[row], "gDNA", "TRB", 0)
+    RichEvCalc(TableS10_df$Patient[row], "DNA", "TRB")
     Div_df$Diversity <- abs(Div_df$Diversity)
     if(TableS9_df$Patient[row] != "TLML_1_"){
       TableS10_df[row, 2:(length(Div_df$Diversity)+1)] <- Div_df$Diversity
@@ -236,19 +237,18 @@ ReproduceSupplementaryData(GitHub_path)
 
 # Reproduces all figures from the manuscript
 ReproduceFigures <- function(GitHub_path){
-  library(magick)
   message("Creating clone tracking and clonality plots")
   pb <- txtProgressBar(min = 0,max = 6,style = 3,   width = 50,char = "=")
   # Fetching clone tracking and relative abundance/diversity plots
-  low_exp <- c("TLML_18", "TLML_4_", "TLML_7_", "TLML_20")
-  high_exp <- c("TLML_29", "TLML_1_", "TLML_26", "TLML_22", "TLML_16")
-  alignment_fig(low_exp, "gDNA", "TRB", 0, "clonetrack", "Baseline", paste(GitHub_path, "data/",sep=""), "Clonetrack_low")
+  low_exp <- c("TLML_18_", "TLML_4_", "TLML_7_", "TLML_20_")
+  high_exp <- c("TLML_29_", "TLML_1_", "TLML_26_", "TLML_22_", "TLML_16_")
+  alignment_fig(low_exp, "DNA", "TRB", "clonetrack", "Baseline", paste(GitHub_path, "data/",sep=""), "Clonetrack_low")
   setTxtProgressBar(pb, 1)
-  alignment_fig(high_exp, "gDNA", "TRB", 0, "clonetrack", "Baseline", paste(GitHub_path, "data/",sep=""), "Clonetrack_high")
+  alignment_fig(high_exp, "DNA", "TRB", "clonetrack", "Baseline", paste(GitHub_path, "data/",sep=""), "Clonetrack_high")
   setTxtProgressBar(pb, 2)
-  alignment_fig(low_exp, "gDNA", "TRB", 0, "rel_div", "Baseline", paste(GitHub_path, "data/",sep=""), "RelDiv_low")
+  alignment_fig(low_exp, "DNA", "TRB", "rel_div", "Baseline", paste(GitHub_path, "data/",sep=""), "RelDiv_low")
   setTxtProgressBar(pb, 3)
-  alignment_fig(high_exp, "gDNA", "TRB", 0, "rel_div", "Baseline", paste(GitHub_path, "data/",sep=""), "RelDiv_high")
+  alignment_fig(high_exp, "DNA", "TRB", "rel_div", "Baseline", paste(GitHub_path, "data/",sep=""), "RelDiv_high")
   setTxtProgressBar(pb, 4)
   
   # Reading exported clone tracking and relative abundance/diversity plots and exporting into figure format
@@ -280,36 +280,36 @@ ReproduceFigures <- function(GitHub_path){
   message("Creating VJ Usage plots")
   pb <- txtProgressBar(min = 0,max = 11,style = 3,   width = 50,char = "=")
   # Fetching VJ usage plots
-  timepoint_order <- c("baseline_apheresis", "infusion", "4W", "FU1", "FU2", "FU3", "FU4", "FU5")
+  timepoint_order <- c("baseline", "infusion", "4W", "FU_01", "FU_02", "FU_03", "FU_04", "FU_05")
   VJUsage_Step3("TLML_1_", "DNA", timepoint_order[1:6], 1, 6, dir_main)
   setTxtProgressBar(pb, 1)
   VJUsage_Step3("TLML_4_", "DNA", timepoint_order[1:4], 1, 4, dir_main)
   setTxtProgressBar(pb, 2)
   VJUsage_Step3("TLML_7_", "DNA", timepoint_order[1:5], 1, 5, dir_main)
   setTxtProgressBar(pb, 3)
-  VJUsage_Step3("TLML_16", "DNA", timepoint_order[1:8], 1, 8, dir_main)
+  VJUsage_Step3("TLML_16_", "DNA", timepoint_order[1:8], 1, 8, dir_main)
   setTxtProgressBar(pb, 4)
-  VJUsage_Step3("TLML_18", "DNA", timepoint_order[1:3], 1, 3, dir_main)
+  VJUsage_Step3("TLML_18_", "DNA", timepoint_order[1:3], 1, 3, dir_main)
   setTxtProgressBar(pb, 5)
-  VJUsage_Step3("TLML_20", "DNA", timepoint_order[1:5], 1, 5, dir_main)
+  VJUsage_Step3("TLML_20_", "DNA", timepoint_order[1:5], 1, 5, dir_main)
   setTxtProgressBar(pb, 6)
-  VJUsage_Step3("TLML_22", "DNA", timepoint_order[1:6], 1, 6, dir_main)
+  VJUsage_Step3("TLML_22_", "DNA", timepoint_order[1:6], 1, 6, dir_main)
   setTxtProgressBar(pb, 7)
-  VJUsage_Step3("TLML_26", "DNA", timepoint_order[1:5], 1, 5, dir_main)
+  VJUsage_Step3("TLML_26_", "DNA", timepoint_order[1:5], 1, 5, dir_main)
   setTxtProgressBar(pb, 8)
-  VJUsage_Step3("TLML_29", "DNA", timepoint_order[1:3], 1, 3, dir_main)
+  VJUsage_Step3("TLML_29_", "DNA", timepoint_order[1:3], 1, 3, dir_main)
   setTxtProgressBar(pb, 9)
   
   # Reading exported clone tracking and relative abundance/diversity plots and exporting into figure format
   VJTLML_1_ <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_1__.png", sep=""))
   VJTLML_4_ <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_4__.png", sep=""))
   VJTLML_7_ <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_7__.png", sep=""))
-  VJTLML_16 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_16_.png", sep=""))
-  VJTLML_18 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_18_.png", sep=""))
-  VJTLML_20 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_20_.png", sep=""))
-  VJTLML_22 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_22_.png", sep=""))
-  VJTLML_26 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_26_.png", sep=""))
-  VJTLML_29 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_29_.png", sep=""))
+  VJTLML_16 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_16__.png", sep=""))
+  VJTLML_18 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_18__.png", sep=""))
+  VJTLML_20 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_20__.png", sep=""))
+  VJTLML_22 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_22__.png", sep=""))
+  VJTLML_26 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_26__.png", sep=""))
+  VJTLML_29 <- image_read(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_29__.png", sep=""))
   FigOverlay <- image_read(paste(GitHub_path, "data/VJFigOverlay.png", sep=""))
   setTxtProgressBar(pb, 10)
   
@@ -331,20 +331,20 @@ ReproduceFigures <- function(GitHub_path){
   unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_1__.png", sep=""))
   unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_4__.png", sep=""))
   unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_7__.png", sep=""))
-  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_16_.png", sep=""))
-  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_18_.png", sep=""))
-  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_20_.png", sep=""))
-  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_22_.png", sep=""))
-  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_26_.png", sep=""))
-  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_29_.png", sep=""))
+  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_16__.png", sep=""))
+  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_18__.png", sep=""))
+  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_20__.png", sep=""))
+  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_22__.png", sep=""))
+  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_26__.png", sep=""))
+  unlink(paste(GitHub_path, "data/TLML_VJUsage_DNA_TLML_29__.png", sep=""))
   setTxtProgressBar(pb, 11)
   close(pb)
   
   message("Creating cfDNA plots")
   pb <- txtProgressBar(min = 0,max = 10,style = 3,   width = 50,char = "=")
   # Fetching cfDNA plots
-  low_exp <- c("TLML_4_", "TLML_20")
-  high_exp <- c("TLML_29", "TLML_26", "TLML_22", "TLML_16")
+  low_exp <- c("TLML_4_", "TLML_20_")
+  high_exp <- c("TLML_29_", "TLML_26_", "TLML_22_", "TLML_16_")
   alignment_fig(low_exp, "cfDNA", "TRB", 0, "clonetrack_cfDNA", "Baseline", paste(GitHub_path, "data/",sep=""), "clonetrack_cfDNA_lowexp")
   setTxtProgressBar(1)
   alignment_fig(high_exp, "cfDNA", "TRB", 0, "clonetrack_cfDNA", "Baseline", paste(GitHub_path, "data/",sep=""), "clonetrack_cfDNA_highexp")

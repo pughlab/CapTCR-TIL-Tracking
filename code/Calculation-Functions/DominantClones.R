@@ -6,13 +6,15 @@
 # @param patient: specific patient code 
 # @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
-# @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 
-DomClone <- function(patient, sampcohort, chain, clnefrc){
+DomClone <- function(patient, sampcohort, chain){
   
-  # Loads data for the speicif patient, sample cohort, and chain
-  Load_data(patient, sampcohort, chain, clnefrc)
-  samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
+  # Loads data for the specific patient, sample cohort, and chain
+  CDR3_fraction <- eval(as.name(paste0(patient, sampcohort)))
+  samporder <- eval(as.name(paste0(patient, sampcohort, "_samporder")))
+  
+  Base_data <- eval(as.name(paste0(patient, sampcohort, "_", samporder[1])))
+  TIL_data <- eval(as.name(paste0(patient, sampcohort, "_", samporder[2])))
   
   # Creates a dataframe 'Hyperexpansive_Postinfusion' containing the post-infusion hyperexpansive clones
   Hyperexpansive <- CDR3_fraction[which(CDR3_fraction$cloneFraction > 0.05),]

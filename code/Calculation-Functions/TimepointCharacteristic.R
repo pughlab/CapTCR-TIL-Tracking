@@ -13,12 +13,10 @@
 Timepoint_char <- function(patient, sampcohort, chain, clnefrc, char, sample){
   
   # Loads longitudinal sample order
-  samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
+  samporder <- eval(as.name(paste0(patient, sampcohort, "_samporder")))
 
-  #Loads patient clone data
-  Load_data(patient, sampcohort, chain, clnefrc)
-  
-  reference_data <- CDR3_fraction[which(CDR3_fraction$filename==sample),]
+  #Loads sample data
+  reference_data <- eval(as.name(paste0(patient, sampcohort, "_", sample)))
   
   # Prints the total amount of TIL clones if specified by the user
   if(char=="Clonotypes"){
@@ -31,6 +29,7 @@ Timepoint_char <- function(patient, sampcohort, chain, clnefrc, char, sample){
   
   # Prints the fraction of clones >5% in the TIL sample if specified by the user
   if(char=="Oligo"){
+    reference_data <- reference_data[which(reference_data$cloneFraction > clnefrc),]
     Sum_Oligo <<- sum(reference_data$cloneFraction)
   }
   if(char=="AvgCloneFrac"){

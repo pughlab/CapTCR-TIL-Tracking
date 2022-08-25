@@ -5,20 +5,19 @@
 # Calculates the gDNA overlap and total amount of TIL vs background clones for cfDNA samples
 # @param patient: specific patient code 
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
-# @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 # @param analysis: Desired cfDNA analysis ("gDNAOverlap" or "TotalTIL&Background")
 
-cfDNA_calc <- function(patient, chain, clnefrc, analysis){
+cfDNA_calc <- function(patient, chain, analysis){
 
-  # Load and assign both gDNA and cfDNA data for the patient
-  Load_data(patient, "gDNA", chain, clnefrc)
-  gDNA_FW <- FW_data
-  gDNA_Base <- Base_data
-  gDNA_Total <- CDR3_fraction
-  Load_data(patient, "cfDNA", chain, clnefrc)
-  cfDNA_FW <- FW_data
-  cfDNA_Base <- Base_data
-  cfDNA_Total <- CDR3_fraction
+  # Loading both gDNA and cfDNA data and assigning the 4 week and baseline data to differing data sets
+  gDNA_samporder <- eval(as.name(paste0(patient, "DNA_samporder")))
+  cfDNA_samporder <- eval(as.name(paste0(patient, "cfDNA_samporder")))
+  gDNA_FW <- eval(as.name(paste0(patient, "DNA_", gDNA_samporder[3])))
+  gDNA_Base <- eval(as.name(paste0(patient, "DNA_", gDNA_samporder[1])))
+  gDNA_Total <- eval(as.name(paste0(patient, "DNA")))
+  cfDNA_FW <- eval(as.name(paste0(patient, "cfDNA_", cfDNA_samporder[2])))
+  cfDNA_Base <- eval(as.name(paste0(patient, "cfDNA_", cfDNA_samporder[1])))
+  cfDNA_Total <- eval(as.name(paste0(patient, "cfDNA")))
   
   # Create outline for dataframe containing all CDR3s and their clonefraction in both sample cohorts and timepoints
   TotalCDR3 <- unique(c(cfDNA_Total$aaSeqCDR3, gDNA_Total$aaSeqCDR3))

@@ -4,24 +4,20 @@
 
 # Finds the amount of a sample taken up by the top 50% of another sample
 # @param patient: specific patient code 
-# @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
+# @param sampcohort: Desired sample cohort, could be DNA, RNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
-# @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 # @param Top50: sample which will have its top 50% compared
 # @param Reference: sample which will be compared to 
 
-Top50.fx <- function(patient, sampcohort, chain, clnefrc, Top50, Reference){
+Top50.fx <- function(patient, sampcohort, chain, Top50, Reference){
     
-    # Loads patient sample order
-    samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
+  # Loads longitudinal sample order
+  samporder <- eval(as.name(paste0(patient, sampcohort, "_samporder")))
+  
+  #Loads sample data
+  Top50Samp <- eval(as.name(paste0(patient, sampcohort, "_", Top50)))
+  ReferenceSamp <- eval(as.name(paste0(patient, sampcohort, "_", Reference)))
 
-    # Loads patient clone data
-    Load_data(patient, sampcohort, chain, clnefrc)
-
-    #Creating dataframes for the clones of the Top50 and Reference samples
-    Top50Samp <- CDR3_fraction[which(CDR3_fraction$filename==grep(Top50, samporder, value=TRUE)),]
-    ReferenceSamp <- CDR3_fraction[which(CDR3_fraction$filename==grep(Reference, samporder, value=TRUE)),]
-    
     # Creating dataframe showing both the clone fractions of the top 50 and reference sample datasets
     Reference_clonefraction <- NA
     Top50Data <- cbind(Top50Samp, Reference_clonefraction)

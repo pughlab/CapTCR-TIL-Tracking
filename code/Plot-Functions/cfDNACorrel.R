@@ -5,23 +5,22 @@
 # Plots the correlation between the cfDNA and gDNA repertoires 
 # @param patients: list of patients for plot alignment, could be high, med, or low 
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
-# @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 # @param clones: Desired clones to analyze (TIL or Background)
 
 # Creating R^2 function
 rsq <- function (x, y) cor(x, y) ^ 2
 
-cfDNA_correl <- function(patient, chain, clnefrc, clones){
+cfDNA_correl <- function(patient, chain, clones){
   
   # Loading both gDNA and cfDNA data and assigning the 4 week and baseline data to differing data sets
-  Load_data(patient, "gDNA", chain, clnefrc)
-  gDNA_FW <- FW_data
-  gDNA_Base <- Base_data
-  gDNA_Total <- CDR3_fraction
-  Load_data(patient, "cfDNA", chain, clnefrc)
-  cfDNA_FW <- FW_data
-  cfDNA_Base <- Base_data
-  cfDNA_Total <- CDR3_fraction
+  gDNA_samporder <- eval(as.name(paste0(patient, "DNA_samporder")))
+  cfDNA_samporder <- eval(as.name(paste0(patient, "cfDNA_samporder")))
+  gDNA_FW <- eval(as.name(paste0(patient, "DNA_", gDNA_samporder[3])))
+  gDNA_Base <- eval(as.name(paste0(patient, "DNA_", gDNA_samporder[1])))
+  gDNA_Total <- eval(as.name(paste0(patient, "DNA")))
+  cfDNA_FW <- eval(as.name(paste0(patient, "cfDNA_", cfDNA_samporder[2])))
+  cfDNA_Base <- eval(as.name(paste0(patient, "cfDNA_", cfDNA_samporder[1])))
+  cfDNA_Total <- eval(as.name(paste0(patient, "cfDNA")))
   
   # Getting a list of redundant TIL clones and their colours
   TotalCDR3 <- unique(c(cfDNA_Total$aaSeqCDR3, gDNA_Total$aaSeqCDR3))

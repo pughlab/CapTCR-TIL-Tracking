@@ -2,9 +2,9 @@
 # Sample Cohort Correlation #
 #############################
 
-# Plots the correlative overlap between sample cohorts (gDNA, cDNA, cfDNA)
-# @param sampcohort1: Desired first sample cohort, could be gDNA, cDNA, or cfDNA
-# @param sampcohort2: Desired second sample cohort, could be gDNA, cDNA, or cfDNA
+# Plots the correlative overlap between sample cohorts (DNA, RNA, cfDNA)
+# @param sampcohort1: Desired first sample cohort, could be DNA, RNA, or cfDNA
+# @param sampcohort2: Desired second sample cohort, could be DNA, RNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 # @param dir_output: directory for the output png
@@ -15,18 +15,17 @@ rsq <- function (x, y) cor(x, y) ^ 2
 SampleCohort_Correl <- function(sampcohort1, sampcohort2, chain, clnefrc, dir_output, file_output){
     
     #List of patients required for analysis (requires manual change)
-    patients <- c("TLML_4_", "TLML_7_", "TLML_18", "TLML_20", "TLML_22",
-                  "TLML_26", "TLML_29", "TLDC_1_")
+    patients <- c("TLML_4_", "TLML_16_", "TLML_20_", "TLML_22_",
+                  "TLML_26_", "TLML_29_")
 
     # Loops through the patients and loads the data from the 2 desired sample cohorts in one dataframe
     for(patient in patients){
-        Load_data(patient, sampcohort1, chain, clnefrc)
-        Sample1_fraction <- FW_data[c("aaSeqCDR3", "cloneFraction")]
+        # Load fist sample cohort data
+        samporder_cohort1 <- eval(as.name(paste0(patient, sampcohort1, "_samporder")))
+        Sample1_fraction <- eval(as.name(paste0(patient, sampcohort1, "_", samporder_cohort1[3])))[c("aaSeqCDR3", "cloneFraction")]
         Sample1_fraction$clone2_Fraction <- NA
         
-        Load_data(patient, sampcohort2, chain, clnefrc)
-        Sample2_fraction <- FW_data[c("aaSeqCDR3", "cloneFraction")]
-        
+        Sample2_fraction <- eval(as.name(paste0(patient, sampcohort2, "_", samporder_cohort1[3])))[c("aaSeqCDR3", "cloneFraction")]
         Sample1_fraction$clone2_Fraction <- Sample2_fraction$cloneFraction[match(Sample1_fraction$aaSeqCDR3, Sample2_fraction$aaSeqCDR3)]
         #Removing all rows with NA values
         Sample1_fraction <- na.omit(Sample1_fraction)
@@ -35,8 +34,7 @@ SampleCohort_Correl <- function(sampcohort1, sampcohort2, chain, clnefrc, dir_ou
     }
 
     # Binds all of the patient's data together
-    Ov_data <- rbind(TLML_4_merged, TLML_7_merged, TLML_18merged,
-                     TLML_20merged, TLML_22merged, TLML_26merged, TLML_29merged, TLDC_1_merged)
+    Ov_data <- rbind(TLML_4_merged, TLML_16_merged, TLML_20_merged, TLML_22_merged, TLML_26_merged, TLML_29_merged)
 
     # Calculates and prints R^2 value
     print(rsq(Ov_data$cloneFraction, Ov_data$clone2_Fraction))

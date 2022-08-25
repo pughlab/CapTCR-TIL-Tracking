@@ -4,26 +4,32 @@
 
 # Calculates the clone fraction of the top 4 week clones in the baseline and TIL-infusion data
 # @param patient: specific patient code 
-# @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
+# @param sampcohort: Desired sample cohort, could be DNA, RNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
-# @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 # @param dir_clones: parent directory where clone files are located
 # @param dir_samplekeys: directory where the sample keys excel file are located
 # @param file_samplekeys: file name of the sample keys 
 
-Top104WComp <- function(patient, sampcohort, chain, clnefrc){
+Top104WComp <- function(patient, sampcohort, chain){
   
-  # Loads in patient data
-  Load_data(patient, sampcohort, chain, clnefrc)
+  # Loads longitudinal sample order
+  samporder <- eval(as.name(paste0(patient, sampcohort, "_samporder")))
   
-  # Loading patient sample order
-  samporder <- eval(as.name(paste(patient, sampcohort, sep="")))
+  #Loads sample data
+  FW_sample <- samporder[grepl("4W", samporder)]
+  if(patient == "TLML_1_"){
+    FW_sample <- samporder[grepl("FU_01", samporder)]
+  }
+  FW_data <- eval(as.name(paste0(patient, sampcohort, "_", FW_sample)))
+  
+  TIL_sample <- samporder[grepl("infusion", samporder)]
+  TIL_data <- eval(as.name(paste0(patient, sampcohort, "_", TIL_sample)))
+  
+  Base_sample <- samporder[grepl("baseline", samporder)]
+  Base_data <- eval(as.name(paste0(patient, sampcohort, "_", Base_sample)))
   
   # Create Top104W dataframe out of the top 10 clones in the 4 week sample
   Top104W <- FW_data[1:10,]
-  if(patient=="TLML_1_"){
-    Top104W <- CDR3_fraction[which(CDR3_fraction$filename==TLML_1_gDNA[3]),][1:10,]
-  }
   Top104W$TIL_cloneFraction <- replicate(10, 0)
   Top104W$Base_cloneFraction <- replicate(10, 0)
   

@@ -4,20 +4,20 @@
 
 # Aligns the clone tracking plots with a single x-axis
 # @param patients: list of patients for plot alignment, could be high, med, or low 
-# @param sampcohort: Desired sample cohort, could be gDNA, cDNA, or cfDNA
+# @param sampcohort: Desired sample cohort, could be DNA, RNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
 # @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
-# @param figure: figure wanting to be created (clonetrack, diversity, relative, or rel_div)
+# @param figure: figure wanting to be created (clonetrack, diversity, relative, cfDNAcorrel, clonetrack_cfDNA or rel_div)
 # @param primary: desired sample to appear first (Baseline or TIL)
 # @param dir_output: directory to put the png output into
 # @param file_output: desired filename to output 
 
-alignment_fig <- function(patients, sampcohort, chain, clnefrc, figure, primary, dir_output, file_output, clones=NULL){
+alignment_fig <- function(patients, sampcohort, chain, figure, primary, dir_output, file_output, clones=NULL){
     
     # Creates a list of the number of samples for each patient and finds the patient with the maximum amount of samples
     lst <- list()
     for(i in 1:length(patients)){
-        lst[[i]] <- length(eval(as.name(paste(patients[i], sampcohort, sep=""))))
+        lst[[i]] <- length(eval(as.name(paste(patients[i], sampcohort, "_samporder", sep=""))))
     }
     max <- as.numeric(lst[(which.max(lst))])
     #x_labs <- order[1:max]
@@ -25,11 +25,11 @@ alignment_fig <- function(patients, sampcohort, chain, clnefrc, figure, primary,
     # Creates a list of the required widths of each of the patients plots based on their number of samples compared to the patient with the maximum number of samples
     widths <- list()
     for(i in 1:length(patients)){
-        if(patients[i] == 'TLML_1_' & sampcohort == 'gDNA'){
-          widths[i] <- (length(eval(as.name(paste(patients[i], sampcohort, sep=""))))+1)/max
+        if(patients[i] == 'TLML_1_' & sampcohort == 'DNA'){
+          widths[i] <- (length(eval(as.name(paste(patients[i], sampcohort, "_samporder", sep=""))))+1)/max
         }
         else{
-          widths[i] <- (length(eval(as.name(paste(patients[i], sampcohort, sep="")))))/(max)
+          widths[i] <- (length(eval(as.name(paste(patients[i], sampcohort, "_samporder", sep="")))))/(max)
         }
     }
     widths <- c(unlist(widths))
@@ -42,23 +42,23 @@ alignment_fig <- function(patients, sampcohort, chain, clnefrc, figure, primary,
     pltlst <- list()
     for(i in 1:length(patients)){
         if(figure=="clonetrack"){
-            ClonetrackPlot(width_df$patients[i], sampcohort, chain, clnefrc, primary)
+            ClonetrackPlot(width_df$patients[i], sampcohort, chain, primary)
         }
         if(figure=="clonetrack_cfDNA"){
-            cfDNA_clonetrack(width_df$patients[i], sampcohort, chain, clnefrc, primary)
+            cfDNA_clonetrack(width_df$patients[i], sampcohort, chain, primary)
         }
         if(figure=="cfDNAcorrel"){
-            cfDNA_correl(width_df$patients[i], chain, clnefrc, clones)
+            cfDNA_correl(width_df$patients[i], chain, clones)
             max <- max*(3^(1/length(patients)))
         }
         if(figure=="diversity"){
-            DivPlot(width_df$patients[i], sampcohort, chain, clnefrc, primary, 500)
+            DivPlot(width_df$patients[i], sampcohort, chain, primary, 500)
           }
         if(figure=="relative"){
-            RelPlot(width_df$patients[i], sampcohort, chain, clnefrc, primary)
+            RelPlot(width_df$patients[i], sampcohort, chain, primary)
         }
         if(figure=="rel_div"){
-            Overlay_RelDiv(width_df$patients[i], sampcohort, chain, clnefrc, primary, 500)
+            Overlay_RelDiv(width_df$patients[i], sampcohort, chain, primary, 500)
         }
 
         myp1 <- myp + theme(axis.text.x=element_blank(), axis.title.y = element_blank(), axis.text.y=element_blank())

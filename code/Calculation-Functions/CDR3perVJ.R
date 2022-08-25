@@ -28,13 +28,15 @@ CDR3perVJ <- function(patient, cohort, timepoint_order){
     for(clone in 1:length(clonotypes$cloneFraction)){
         clonotypes$cloneFraction[clone] <- clonotypes$cloneCount[clone]/sum(clonotypes[which(clonotypes$Cycle==clonotypes$Cycle[clone]),]$cloneCount)
     }
-
+    
     # Creates dataframe 'total_df' which contains the average CDR3 per VJ at each timepoint
     expanded_df <- clonotypes[which(clonotypes$cloneFraction >= 0),]
+    timepoint_order <- timepoint_order[timepoint_order %in% unique(expanded_df$Cycle)] 
     total_df <- data.frame(matrix(NA,ncol=2, nrow=length(timepoint_order)))
     colnames(total_df) <- c("Cycle", "AverageCDR3")
+    
     i <- 1
-    for(cycle in unique(expanded_df$Cycle)){
+    for(cycle in timepoint_order){
         cycle_expanded <- expanded_df[which(expanded_df$Cycle==cycle),]
         AverageCDR3 <- length(cycle_expanded$aaSeqCDR3)/length(unique(cycle_expanded$VJcombo))
         total_df$Cycle[i] <- cycle
