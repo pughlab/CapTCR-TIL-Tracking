@@ -166,10 +166,13 @@ unique(TLML_1_DNA_baseline_2013_9$filename)
 ### **Reproduce.R**: Reproduce.R reproduces SupplementaryData.xlsx, VJUsage_Fig.png, cfDNA_fig.png, and Clone_RelDiv.png
 **Reproducing Supplementary Data**
  - The directory *code/Calculation-Functions* consists of functions which run calculations which produce the numbers used in the paper and present in the supplementary materials. After the tables are created, they are exported as separate worksheets in an excel file.
+
 **Reproducing clone tracking and diversity figure**
  - The directory *code/Plot-Functions* contains the *CloneTracking.R* function as well as the *AbundanceDiversityOverlay.R* function which create both plots for a specific patient sample cohort. These plots are used in the *PlotAlignment.R* function which aligns all patients within a certain group. This figure is exported as a png. The *Reproduce.R* script imports these images and overlays them onto the figure overlay image.
+
 **Reproducing VJ usage**
  - The directory *code/Plot-Functions* contains the *VJUsage_Step3.R* function which creates the VJ circle plot for a specific patient sample cohort and exports it as a png. Th *Reproduce.R* script imports these images and overlays them onto the figure overlay image. 
+
 **Reproducing cfDNA figure**
  - The directory *code/Plot-Functions* contains the *cfDNACorrel.R* function as well as the *cfDNACloneTrack.R* which create both plots for a specific patient sample cohort. These plots are used in the *PlotAlignment.R* function which aligns all patients within a certain group. This figure is exported as a png. The *Reproduce.R* script imports these images and overlays them onto the figure overlay image. 
 
