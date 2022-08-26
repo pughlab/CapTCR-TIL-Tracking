@@ -150,7 +150,7 @@ unique(TLML_1_DNA$filename)
 [1] "baseline_2013_9" "FU_02_2014_4"    "infusion_2013_8" "FU_03_2014_7"    "FU_01_2014_1"
 ```
  - *{Project}{Patient_ID}_{Sample_Cohort}_{Timepoint}_{Sample_Year}_{Sample_Month}*: Dataframe of mixcr_output of a timepoint for a specific patient sample cohort
-	 - * **Note**: Dataframes remove singletons and unproductive clonotypes*
+	 - **Note**: Dataframes remove singletons and unproductive clonotypes*
 ```R
 TLML_1_DNA_baseline_2013_9[1:5,]
          filename        aaSeqCDR3 cloneFraction cloneCount
