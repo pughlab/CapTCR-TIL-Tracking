@@ -1,5 +1,5 @@
 # Loading scripts
-GitHub_path <- readline(prompt = "Enter path to CapTCR-TIL-Tracking (include final '/'):")
+GitHub_path <- paste0(getwd(), "/")
 dir_main <- paste(GitHub_path, "data/", sep="")
 
 # Generating list of relevant R scripts from GitHub repo and then loading in functions and libraries
