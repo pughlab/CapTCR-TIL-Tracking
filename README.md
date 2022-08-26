@@ -131,12 +131,12 @@ cloneCount | cloneFraction | aaSeqCDR3 | nSeqCDR3 | VJcombo | Patient_id | Cycle
 
 ### **Initialize_Data.R**: Loads all data and saves into separate dataframes
 **Variables Assigned**
- - *{Project}{Patient_ID}_{Sample_Cohort}_samporder*: List of *{Timepoint}_{Sample_Year}_{Sample_Month}* for a specific patient sample cohort
+ - {Project}{Patient_ID}_{Sample_Cohort}_samporder: List of *{Timepoint}_{Sample_Year}_{Sample_Month}* for a specific patient sample cohort
 ```R
 TLML_1_DNA_samporder
 [1] "baseline_2013_9" "infusion_2013_8" "FU_01_2014_1"    "FU_02_2014_4"    "FU_03_2014_7"
 ```
- - *{Project}{Patient_ID}_{Sample_Cohort}*: Dataframe of mixcr_output for a specific patient sample cohort 
+ - {Project}{Patient_ID}_{Sample_Cohort}: Dataframe of mixcr_output for a specific patient sample cohort 
 ```R
 TLML_1_DNA[1:5,]
 filename        aaSeqCDR3 cloneFraction cloneCount
@@ -149,7 +149,7 @@ filename        aaSeqCDR3 cloneFraction cloneCount
 unique(TLML_1_DNA$filename)
 [1] "baseline_2013_9" "FU_02_2014_4"    "infusion_2013_8" "FU_03_2014_7"    "FU_01_2014_1"
 ```
- - *{Project}{Patient_ID}_{Sample_Cohort}_{Timepoint}_{Sample_Year}_{Sample_Month}*: Dataframe of mixcr_output of a timepoint for a specific patient sample cohort
+ - {Project}{Patient_ID}_{Sample_Cohort}_{Timepoint}_{Sample_Year}_{Sample_Month}: Dataframe of mixcr_output of a timepoint for a specific patient sample cohort
 	 - **Note**: Dataframes remove singletons and unproductive clonotypes*
 ```R
 TLML_1_DNA_baseline_2013_9[1:5,]
