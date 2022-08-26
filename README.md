@@ -119,7 +119,7 @@ TLML_1_ | CASSPANYEQYF | #1CE6FF
 
 **4. VJUsage.csv**: Output from VJUsage_Step1.R
 VJcombo | Number_aaCDR3 | H_aaCDR3 | Hnorm_aaCDR3 | Patient_id | Cycle | Cohort
- --- | --- | --- | --- | --- | --- 
+ --- | --- | --- | --- | --- | --- | --- 
 TRBV10 | 1 | 0 | 0 | TLML_1_ | baseline | DNA
 
 **5. VJTreemaps.csv**: Output from VJUsage_Step2.R
