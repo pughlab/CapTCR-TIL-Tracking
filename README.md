@@ -163,7 +163,7 @@ TLML_1_DNA_baseline_2013_9[1:5,]
 unique(TLML_1_DNA_baseline_2013_9$filename)
 [1] "baseline_2013_9"
 ```
-### **Reproduce.R**: Reproduce.R reproduces SupplementaryData.xlsx, VJUsage_Fig.png, cfDNA_fig.png, and Clone_RelDiv.png
+### *Reproduce.R*: Reproduce.R reproduces SupplementaryData.xlsx, VJUsage_Fig.png, cfDNA_fig.png, and Clone_RelDiv.png
 **Reproducing Supplementary Data**
  - The directory *code/Calculation-Functions* consists of functions which run calculations which produce the numbers used in the paper and present in the supplementary materials. After the tables are created, they are exported as separate worksheets in an excel file.
 
