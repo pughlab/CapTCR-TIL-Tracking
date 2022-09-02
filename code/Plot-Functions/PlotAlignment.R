@@ -6,7 +6,6 @@
 # @param patients: list of patients for plot alignment, could be high, med, or low 
 # @param sampcohort: Desired sample cohort, could be DNA, RNA, or cfDNA
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
-# @param clnefrc: cut-off from 0 to 1 to track and plot only a subset of clonotypes
 # @param figure: figure wanting to be created (clonetrack, diversity, relative, cfDNAcorrel, clonetrack_cfDNA or rel_div)
 # @param primary: desired sample to appear first (Baseline or TIL)
 # @param dir_output: directory to put the png output into

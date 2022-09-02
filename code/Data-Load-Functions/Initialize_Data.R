@@ -17,9 +17,6 @@ library(igraph)
 
 options(scipen = 999)
 
-
-
-
 ########################
 # Initializes all Data #
 ########################

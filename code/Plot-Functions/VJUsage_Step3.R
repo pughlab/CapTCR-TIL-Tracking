@@ -263,15 +263,14 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
                     )  ,
             height =  fig_height ,
             width  =  fig_width,
-            res    = 5000 , 
+            res    = 500 , 
             units  = "in" ,
             bg     = "transparent"
             )
 
     if(patient=="TLML_1_" & cohort=="DNA"){
       layout_matrix <- c(1,2,NA,3,4,5)
-    }
-    else{
+    }else{
       layout_matrix <- c(1:length(timepoint_list))
     }
     gridExtra::grid.arrange(grobs = ggraph_plots, layout_matrix=rbind(layout_matrix),

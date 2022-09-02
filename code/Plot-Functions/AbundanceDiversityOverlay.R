@@ -17,8 +17,8 @@ Overlay_RelDiv <- function(patient, sampcohort, chain, primary, max){
   RelDiv_df <- cbind(Rel_df, Div_df)
   # Creates plot overalying the 2 with a double y-axis and colouring the second y-axis red 
   if(patient == "TLML_1_" & sampcohort == "DNA"){
-    p <- ggplot(RelDiv_df, aes(x=factor(samporder, c("apheresis_2013_9", "infusion_2013_8", "FU_01_2014_1", "FU_02_2014_4", "FU_03_2014_7")))) +
-        scale_x_discrete(limits=c('apheresis_2013_9', 'infusion_2013_8', '4 week sample', 'FU_01_2014_1', 'FU_02_2014_4', 'FU_03_2014_7'), labels=c('apheresis_2013_9', 'infusion_2013_8', '4 week sample', 'FU_01_2014_1', 'FU_02_2014_4', 'FU_03_2014_7'))
+    p <- ggplot(RelDiv_df, aes(x=factor(samporder, c("baseline_2013_9", "infusion_2013_8", "FU_01_2014_1", "FU_02_2014_4", "FU_03_2014_7")))) +
+        scale_x_discrete(limits=c('baseline_2013_9', 'infusion_2013_8', '4 week sample', 'FU_01_2014_1', 'FU_02_2014_4', 'FU_03_2014_7'), labels=c('baseline_2013_9', 'infusion_2013_8', '4 week sample', 'FU_01_2014_1', 'FU_02_2014_4', 'FU_03_2014_7'))
   }
   else{
     p <- ggplot(RelDiv_df)
