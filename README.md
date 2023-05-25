@@ -131,7 +131,7 @@ cloneCount | cloneFraction | aaSeqCDR3 | nSeqCDR3 | VJcombo | Patient_id | Cycle
 
 ### **Initialize_Data.R**: Loads all data and saves into separate dataframes
 **Variables Assigned**
- - *"Project" + "Patient_ID" + "Sample_Cohort" + "_samporder"*: List of *"Timepoint" + "_" + "Sample_Year" + "_" + "Sample_Month"* for a specific patient sample cohort
+ - *"Project" + "Patient_ID" + "Sample_Cohort" + "_samporder"*: List of *"Timepoint" + "\_" + "Sample_Year" + "\_" + "Sample_Month"* for a specific patient sample cohort
 ```R
 TLML_1_DNA_samporder
 [1] "baseline_2013_9" "infusion_2013_8" "FU_01_2014_1"    "FU_02_2014_4"    "FU_03_2014_7"
