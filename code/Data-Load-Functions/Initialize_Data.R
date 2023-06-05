@@ -4,6 +4,7 @@
 
 # Loading required libraries & options (if not previously installed, you must first install these packages)
 library(ggplot2)
+library(changepoint)
 library(ggalluvial)
 library(readxl)
 library(cowplot)

@@ -12,7 +12,7 @@ Convergence <- function(patient, sampcohort, chain, timepoint){
   # and chain. 
   CDR3_df <- clonotypes %>% 
     filter ( Patient_id %in% patient)%>%
-    filter ( Cohort == cohort) %>%
+    filter ( Cohort == sampcohort) %>%
     filter ( Cycle == timepoint) %>%
     filter ( cloneCount > 1) %>%
     mutate(VJcombo = gsub("[.]", "_", VJcombo))
@@ -36,7 +36,7 @@ CDR3perVJ <- function(patient, sampcohort, chain, timepoint){
   
   CDR3_df <- clonotypes %>% 
     filter ( Patient_id %in% patient)%>%
-    filter ( Cohort == cohort) %>%
+    filter ( Cohort == sampcohort) %>%
     filter ( Cycle == timepoint) %>%
     mutate(VJcombo = gsub("[.]", "_", VJcombo))
   
