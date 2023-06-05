@@ -15,6 +15,7 @@ Adoptive Cell Transfer (ACT) of in-vitro Tumor-Infiltrating Lymphocytes (TIL) is
 ## Required Libraries
  - **bioseq**: 0.1.3
  - **cowplot**: 1.1.1
+ - **changepoint**: 2.2.4
  - **ggalluvial**: 0.12.3
  - **ggplot2**: 3.3.6
  - **ggraph**: 2.0.6
@@ -28,23 +29,13 @@ Adoptive Cell Transfer (ACT) of in-vitro Tumor-Infiltrating Lymphocytes (TIL) is
 ```bash
 code
    |-- Calculation-Functions
-   |   |-- AlternateTILClones.R
-   |   |-- BaselinePosition.R
-   |   |-- BaselineTILs.R
-   |   |-- CDR3perVJ.R
-   |   |-- CDR3vsVJ_Expansion.R
-   |   |-- Clonefraction_Correl.R
-   |   |-- DeltaAnalysis.R
-   |   |-- DiversityEval.R
+   |   |-- cfDNACalculations.R
    |   |-- DominantClones.R
-   |   |-- Richness&EvennessCalculations.R
-   |   |-- TCRConvergence.R
-   |   |-- TimepointCharacteristic.R
-   |   |-- Top10Comparison.R
-   |   |-- Top50Analysis.R
+   |   |-- Diversity_calc.R
+   |   |-- Persistence_calc.R
+   |   |-- VJUsage_calc.R
    |   |-- VJUsage_Step1.R
    |   |-- VJUsage_Step2.R
-   |   |-- cfDNACalculations.R
    |-- Data-Load-Functions
    |   |-- Initialize_Data.R
    |   |-- ProductiveCloneFraction.R
@@ -131,7 +122,7 @@ cloneCount | cloneFraction | aaSeqCDR3 | nSeqCDR3 | VJcombo | Patient_id | Cycle
 
 ### **Initialize_Data.R**: Loads all data and saves into separate dataframes
 **Variables Assigned**
- - *"Project" + "Patient_ID" + "_" + "Sample_Cohort" + "_samporder"*: List of *"Timepoint" + "\_" + "Sample_Year" + "\_" + "Sample_Month"* for a specific patient sample cohort
+ - *"Project" + "Patient_ID" + "Sample_Cohort" + "_samporder"*: List of *"Timepoint" + "_" + "Sample_Year" + "_" + "Sample_Month"* for a specific patient sample cohort
 ```R
 TLML_1_DNA_samporder
 [1] "baseline_2013_9" "infusion_2013_8" "FU_01_2014_1"    "FU_02_2014_4"    "FU_03_2014_7"
