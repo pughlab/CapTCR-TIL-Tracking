@@ -24,7 +24,7 @@ Overlay_RelDiv <- function(patient, sampcohort, chain, primary, max){
     p <- ggplot(RelDiv_df)
   }
   myp <<- p + geom_bar(aes(x=samporder, y=count, fill=type, alpha=0.5), stat="identity", width=1/3) + scale_fill_manual(values = c("steelblue","goldenrod")) +
-          scale_y_continuous(labels=scales::percent, limits=c(0,1.0), sec.axis=sec_axis(~.*500)) + ylab(patient) +
+          scale_y_continuous(labels=scales::percent, limits=c(0,1.0), sec.axis=sec_axis(~.*max)) + ylab(patient) +
           theme(axis.title.y = element_text(size = 13, angle=0, vjust=0.5),
                 axis.title.x = element_blank(),
                 axis.line = element_line(color = "black"),
@@ -35,6 +35,6 @@ Overlay_RelDiv <- function(patient, sampcohort, chain, primary, max){
             panel.background = element_rect(fill = "transparent",colour = NA),
             legend.position = "blank",
             plot.margin = unit(c(0.2,0,0,0),"cm")) + 
-          geom_line(aes(x=Filename, y=Diversity/500, group=1), stat="identity", color="#BF5549", size=1.5) +
-          geom_point(aes(x=Filename, y=Diversity/500, shape=factor(Shape)), colour="#BF5549", size = 4.0)
+          geom_line(aes(x=Filename, y=Diversity/max, group=1), stat="identity", color="#BF5549", size=1.5) +
+          geom_point(aes(x=Filename, y=Diversity/max, shape=factor(Shape)), colour="#BF5549", size = 4.0)
 }

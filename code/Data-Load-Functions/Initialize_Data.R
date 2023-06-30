@@ -15,6 +15,8 @@ library(tidyverse)
 library(gridExtra)
 library(ggraph)
 library(igraph)
+library(pheatmap)
+library(changepoint)
 
 options(scipen = 999)
 
@@ -26,6 +28,10 @@ options(scipen = 999)
 # @param timepoint_order: Desired ordering of the timepoints present in 'SampleKeys.xlsx'
 
 Initialize <- function(dir_data, timepoint_order){
+  # Loading in overlap and correlation matrices
+  overlapmatrix <<- read.csv(file.path(paste0(dir_data, "overlapmatrix.csv")), stringsAsFactors=FALSE, row.names=1)
+  correlationmatrix <<- read.csv(file.path(paste0(dir_data, "correlationmatrix.csv")), stringsAsFactors=FALSE, row.names=1)
+  
   # Loading in MiXCR output file
   MiXCR_output <- read_xlsx(paste0(dir_data,"mixcr_output.xlsx"))
   
@@ -78,7 +84,6 @@ Initialize <- function(dir_data, timepoint_order){
     assign(patient, Total, envir = .GlobalEnv)
 }
 }
-
 #########################################
 # Loading Manual Distinct Color Pallete #
 #########################################

@@ -2,18 +2,18 @@
 
 # Abstract
 
-Adoptive Cell Transfer (ACT) of in-vitro Tumor-Infiltrating Lymphocytes (TIL) is an effective treatment of solid tumours commonly resulting in sustainable responses with an objective clinical response rate of around 50% throughout multiple studies (Rosenberg & Restifo, 2015). The ability to sequence and track the T Cell Receptor (TCR) repertoire throughout ACT of in vitro TILs provides an enhanced analysis of a patient’s response. Previous studies have shown that an increased number of TILs correlates with patient response (Valpione et al., 2020), yet the diversity of the TCRs present in the ACT TIL-infusion product has been seen to have no impact on patient response (Mullinax et al., 2018). In this study, we sought to determine 1) whether T cell receptor (TCR) repertoire diversity of the ACT infusion product and pre-infusion baseline sample is associated with response and 2) whether ACT response and relapse can be accurately predicted and tracked through serial blood draws. In this study, 10 patients with cutaneous melanoma, mucosal melanoma, breast, or ovarian cancer were each given TIL ACT after chemotherapeutic depletion. In addition to the apheresis product, peripheral blood cells and cell-free DNA were collected before and after the transfer. The post-infusion samples were taken every 27 - 106 days (average 56 days) after the infusion. TCR repertoire was isolated using the hybrid-capture CapTCR-seq assay followed by comparison of TCR diversity and clonal tracking for each patient. Further analysis revealed that an increased clonality with a reduced richness and eveness of the baseline sample were present in higher response patients. Additionally, the expansive clones of the sample taken 4 weeks after the infusion were seen to originate from low frequency clonotypes present in the TIL infusion. These results demonstrate effective tracking methodologies for TIL ACT as well as a selective hyper-expansion of TIL clones in vivo associated with response to ACT.
+Adoptive Cell Transfer (ACT) of in-vitro Tumour-Infiltrating Lymphocytes (TIL) is an effective treatment of solid tumours resulting in objective clinical responses in metastatic melanoma patients. The ability to sequence and track the T-cell repertoire throughout ACT of in vitro TILs provides a method to identify T-cell repertoire features associated with patients’ benefit from ACT. Identification of response biomarkers for patients receiving ACT of TILs has been limited. Conflicting evidence exists for biomarkers such as the quantity of TILs in the infusion product, while other potential biomarkers, such as diversity of the post-infusion peripheral repertoire, have not yet been studied. In this study, we sought to determine 1) the efficacy of using CapTCR-seq to track TILs in serial blood draws over the course of ACT immunotherapy 2) whether ACT response and relapse can be accurately predicted and tracked through serial blood draws. In this study, 9 patients with cutaneous (N = 7) or mucosal (N = 2) melanoma received TIL ACT after chemotherapeutic depletion. Hybrid-capture CapTCR-seq was conducted on apheresis product and pre-/post-transfer peripheral blood mononuclear cells (PBMC) and cell-free DNA. Comparison between PBMC DNA, PBMC RNA, and cfDNA repertoires demonstrated an increased presence of shared T cell clonotypes post-infusion when compared with baseline samples. Higher abundance of TIL clonotypes in the PBMC baseline and post-infusion DNA T-cell repertoires, presence of shared T cell clonotypes between timepoints, and a higher proportion of expanded clonotypes (above change point threshold) present in the PBMC baseline DNA T-cell repertoire was seen in responders when compared with non-responders according to RECIST criteria.  Additionally, presence of clonotypes in the baseline PBMC repertoire and TIL infusion product were predictors of expansion in the post-infusion PBMC repertoire. These results demonstrate effective tracking methodologies and suggest a predictive role for baseline repertoire statistics in response to the ACT of TILs.
 
 ---
 
 # Organization and Quick Reproduction
 
 ## Running *Reproduce.R*
- - Running *Reproduce.R* reproduces the supplementary data, cfDNA figure, clone tracking / diversity figure, and the cfDNA figure. Before running the script, ensure that the required libraries have been installed. Then, go into the repository parent directory and run the script. 
- - Alternatively, it can be run on a cloud machine through [our Code Ocean repository] (https://codeocean.com/)
+ - Running *Reproduce.R* reproduces the supplementary data, clone tracking, diversity, and overlap figures. Before running the script, ensure that the required libraries have been installed. Then, go into the repository parent directory and run the script. 
 
 ## Required Libraries
  - **bioseq**: 0.1.3
+ - **changepoint**: 2.2.4
  - **cowplot**: 1.1.1
  - **changepoint**: 2.2.4
  - **ggalluvial**: 0.12.3
@@ -22,6 +22,7 @@ Adoptive Cell Transfer (ACT) of in-vitro Tumor-Infiltrating Lymphocytes (TIL) is
  - **gridExtra**: 2.3
  - **magick**: 2.7.3
  - **openxlsx**: 4.2.5
+ - **pheatmap**: 1.0.12
  - **readxl**: 1.4.1
  - **tidyverse**: 1.3.2
 
@@ -29,11 +30,10 @@ Adoptive Cell Transfer (ACT) of in-vitro Tumor-Infiltrating Lymphocytes (TIL) is
 ```bash
 code
    |-- Calculation-Functions
-   |   |-- cfDNACalculations.R
-   |   |-- DominantClones.R
-   |   |-- Diversity_calc.R
-   |   |-- Persistence_calc.R
-   |   |-- VJUsage_calc.R
+   |   |-- changepoint.R
+   |   |-- diversity.R
+   |   |-- overlap.R
+   |   |-- persistence.R
    |   |-- VJUsage_Step1.R
    |   |-- VJUsage_Step2.R
    |-- Data-Load-Functions
@@ -41,14 +41,16 @@ code
    |   |-- ProductiveCloneFraction.R
    |-- Plot-Functions
    |   |-- AbundanceDiversityOverlay.R
-   |   |-- CloneTracking.R
-   |   |-- InverseSimpsonDiversity.R
-   |   |-- PlotAlignment.R
-   |   |-- RelativeAbundance.R
-   |   |-- SampleCohortCorrelation.R
-   |   |-- VJUsage_Step3.R
    |   |-- cfDNACloneTrack.R
    |   |-- cfDNACorrel.R
+   |   |-- CloneTracking.R
+   |   |-- InverseSimpsonDiversity.R
+   |   |-- OverlapHeatmap.R
+   |   |-- PlotAlignment.R
+   |   |-- RelativeAbundance.R
+   |   |-- Richnessboxplot.R
+   |   |-- SampleCohortCorrelation.R
+   |   |-- VJUsage_Step3.R
    |-- Quality-Control
    |   |-- QCPlots.R
    |   |-- UnproductiveClones.R
@@ -56,36 +58,36 @@ code
 data
    |-- 10JUN2020-TILS project - clinical data.csv
    |-- CDR3_colors.csv
-   |-- Clone_RelDivFigOverlay.png
+   |-- correlationmatrix.csv
+   |-- mixcr_output.xlsx
+   |-- overlapmatrix.csv
+   |-- Overlay
+   |   |-- clonetracking_overlay.png
+   |   |-- diversity_overlay.png
+   |   |-- heatmap_overlay.png
+   |   |-- overlap_overlay.png
+   |   |-- whitespace.png
    |-- Quality-Control
-   |   |-- Unproductive-Clones
-   |   |   |-- clonstats_TRBTLML_cDNAgenomic.csv
-   |   |   |-- clonstats_TRBTLML_cfDNAgenomic.csv
-   |   |   |-- clonstats_TRBTLML_gDNAgenomic.csv
    |   |-- align_stats.csv
    |   |-- align_stats_merged.csv
    |   |-- align_stats_reseq.csv
    |   |-- assemble_stats.csv
    |   |-- assemble_stats_merged.csv
    |   |-- assemble_stats_reseq.csv
+   |   |-- Unproductive-Clones
+   |   |   |-- clonstats_TRBTLML_cDNAgenomic.csv
+   |   |   |-- clonstats_TRBTLML_cfDNAgenomic.csv
+   |   |   |-- clonstats_TRBTLML_gDNAgenomic.csv
    |-- SampleKeys.xlsx
-   |-- VJFigOverlay.png
    |-- VJTreemaps.csv
    |-- VJUsage.csv
-   |-- cfDNAFigOverlay.png
-   |-- mixcr_output.xlsx
-result
-   |-- Clone_RelDiv.png
-   |-- Overview.png
-   |-- Quality-Control
-   |   |-- TLML1TLML26_QCDownsampling.png
-   |   |-- TLML_Regular_cDNA_QC.png
-   |   |-- TLML_Regular_cfDNA_QC.png
-   |   |-- TLML_Regular_gDNA_QC.png
-   |-- SampleCohortsCorrelation.png
+results
+   |-- changepoint.png
+   |-- Circleplot.png
+   |-- Clonetrack.png
+   |-- Diversity.png
+   |-- Overlap.png
    |-- SupplementaryData.xlsx
-   |-- VJUsage_Fig.png
-   |-- cfDNA_fig.png
 ```
 ---
 
@@ -158,38 +160,19 @@ unique(TLML_1_DNA_baseline_2013_9$filename)
 **Reproducing Supplementary Data**
  - The directory *code/Calculation-Functions* consists of functions which run calculations which produce the numbers used in the paper and present in the supplementary materials. After the tables are created, they are exported as separate worksheets in an excel file.
 
-**Reproducing clone tracking and diversity figure**
- - The directory *code/Plot-Functions* contains the *CloneTracking.R* function as well as the *AbundanceDiversityOverlay.R* function which create both plots for a specific patient sample cohort. These plots are used in the *PlotAlignment.R* function which aligns all patients within a certain group. This figure is exported as a png. The *Reproduce.R* script imports these images and overlays them onto the figure overlay image.
-
-**Reproducing VJ usage**
- - The directory *code/Plot-Functions* contains the *VJUsage_Step3.R* function which creates the VJ circle plot for a specific patient sample cohort and exports it as a png. Th *Reproduce.R* script imports these images and overlays them onto the figure overlay image. 
-
-**Reproducing cfDNA figure**
- - The directory *code/Plot-Functions* contains the *cfDNACorrel.R* function as well as the *cfDNACloneTrack.R* which create both plots for a specific patient sample cohort. These plots are used in the *PlotAlignment.R* function which aligns all patients within a certain group. This figure is exported as a png. The *Reproduce.R* script imports these images and overlays them onto the figure overlay image. 
+**Reproducing clone tracking figure**
+ - The directory *code/Plot-Functions/* contains the *CloneTracking.R* and *cfDNACorrel.R* scripts which produce the clone tracking figures for the DNA and cfDNA repertoire for a specific patient. These plots are used in the *PlotAlignment.R* script which aligns all patients within a certain group. This figure is exported as a png. The *Reproduce.R* script imports these images and overlays them onto the figure overlay image.
+ 
+ **Reproducing diversity figure**
+  - The directory *code/Plot-Functions/* contains the *AbundanceDiversityOverlay.R* function which produces the diversity plot for a specific patient and sample cohort. These plots are used in the *PlotAlignment.R* function which aligns all patients within a certain group. This figure is exported as a png. The *Reproduce.R* script imports these images and overlays them onto the figure overlay image.
+  
+**Reproduing overlap figure**
+ - The directory *code/Plot-Functions/* contains the *OverlapHeatmap.R*, *Richnessboxplot.R*, and *cfDNACorrel.R* scripts. *OverlapHeatmap.R* exports a png of the heatmap created from the overlap matrix. *Richnessboxplot.R* exports a png of the boxplot richness comparison for the sample cohorts. *cfDNACorrel.R* produces the cfDNA correlation scatter plot for a specific patient which can be aligned and exported as a png using *PlotAlignment.R*. All exported pngs can be combined using the *Reproduce.R* script which overlays them onto the figure overlay image. 
 
 ---
 
 # Results
 
-## HLA type HLA-A-301 shows decrease response to TIL therapy
- - The role of general HLA-A3 phenotype was investigated. None of the partial response patients featured an HLA-A3 phenotype. However, 2 of the stable disease patients demonstrated an HLA-A3 phenotype (HLA-A32, HLA-A33) making up a total of 50% of the stable disease patients.
-## Lower amount of CDR3s per VJ in the baseline repertoire is associated with a higher response
- - Responders demonstrated a lower amount of CDR3s per VJ than non-responders in the baseline repertoire(1.80, range: 1.78 - 2.04 vs 2.72, range: 2.23 - 4.06). This result was verified with a one-tailed t-test (p=0.023704).
-## VJ usage analysis demonstrates CDR3 specific expansion
- - The null hypothesis was rejected for both TIL and background clones with p values of 5.16 x 10-6 and 2.96 x 10-7, respectively. The results demonstrate that if a VJ expands it is due to specific CDR3 expansion rather than a proportional expansion of all CDR3s within a VJ. 
-## Higher TCR convergence in the baseline repertoire is associated with a higher response
- - t was found that responders had a higher TCR convergence at the baseline than non-responders (2.14%, range: 1.18 - 2.94% vs 0.81%, range: 0.20% - 2.40). This result was confirmed through a two-sample t-test (p=0.044226). 
-## Reduced richness and evenness of the baselne TCR repertoire is associated with increased response
- - the various diversity-related statistics demonstrate an important role for the baseline and its relation to the post-infusion sampes in determining response. This association is in despite of chemodepletion of the baseline repertoire and a lack of association between the TIL infusion product and response. 
-## Increased homeostatic abundance of large clonotypes in the baseline TCR repertoire is associated with increased response
- - Overall, the results demonstrate that although associations between homeostatic abundance of large clonotypes and the level of expansion, only the homeostatic abundance of large clonotypes in the baseline are associated with response.
-## Baseline clonotype abundance is associated with abundance post-infusion
- - Overall, it is seen that the baseline abundance of a clonotype dictates its expansion post-infusion despite chemodepletion of the baseline repertoire. 
-## Increased correlation between gDNA and cfDNA TCR repertoires post-infusion
- - the cfDNA repertoire doesn’t show the same hyperexpansion of specific TIL clones as shown in the gDNA repertoire yet an increased similarity is seen between the sample cohorts post-infusion. This increased correlation could represent the high TCR turnover of redundant TILs after adoptive cell-transfer.
-## Change in the amount of a productive rearrangements in cfDNA samples did not correlate with TIL-expansion
- -  Responsive patients had a median of 0.47% (max: 2.72%, min: -1.85%), non-responsive patients showed a median of -1.43% (max: 11.71%, min: -2.98%). 
-## Proportional expansion of the TIL Infusion Product is associated with response
- - It was seen that responders had a larger amount of the TIL Infusion product taken up by the top 50% of the 4 week sample (25.57% range: 21.83% - 79.50% vs 0.269% range: 0.055% - 21.36%). This result was confirmed using a one-tailed two-sample t-test (p=0.014).
-## Propotional expansion of TIL clones in the baseline is associated with increased response
- - It was found that responders had a higher amount of the baseline repertoire taken up by TILs when compared with non-responders (24.23%, range: 19.73% - 37.77% vs 4.42%, range: 2.98% - 13.61%). The association between the amount of TIL clonotypes in the baseline repertoire and the response was verified by a one-tailed two-sample t-test (p=0.00095).
+Clone tracking                      |  Diversity                   | Overlap
+:-------------------------:|:-------------------------:|:-------------------------:|
+![](https://github.com/CameronKerr/results/Clonetrack.png)  |  ![](https://github.com/CameronKerr/results/Diversity.png) | ![](https://github.com/CameronKerr/results/Overlap.png)

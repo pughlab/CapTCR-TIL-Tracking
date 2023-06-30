@@ -226,7 +226,7 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
                                                  V(graph_data[[i]])$size
                                                  ) 
                                          ) + 
-                    geom_node_circle( size = 0.05 , 
+                    geom_node_circle( 
                                       aes_(
                                               fill = as.factor (
                                               V(graph_data[[i]])$color_status
@@ -261,8 +261,8 @@ VJUsage_Step3 <- function(patient, cohort, timepoint_order, fig_height, fig_widt
             file.path(
                     fig_path , fig_name
                     )  ,
-            height =  fig_height ,
-            width  =  fig_width,
+            height =  fig_height*2.5 ,
+            width  =  fig_width*2.5,
             res    = 500 , 
             units  = "in" ,
             bg     = "transparent"

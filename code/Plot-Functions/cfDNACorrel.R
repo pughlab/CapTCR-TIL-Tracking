@@ -7,9 +7,6 @@
 # @param chain: Desired chain to analyze, could be TRA, TRB, TRD, TRG
 # @param clones: Desired clones to analyze (TIL or Background)
 
-# Creating R^2 function
-rsq <- function (x, y) cor(x, y) ^ 2
-
 cfDNA_correl <- function(patient, chain, clones){
   
   # Loading both gDNA and cfDNA data and assigning the 4 week and baseline data to differing data sets
@@ -63,8 +60,10 @@ cfDNA_correl <- function(patient, chain, clones){
   }
  
   # Calculating R^2 values for the baseline and 4 week samples
-  FW_R2 <- rsq(Comparison_FWdata$gDNA_cloneFraction, Comparison_FWdata$cfDNA_cloneFraction)
-  Base_R2 <- rsq(Comparison_Basedata$gDNA_cloneFraction, Comparison_Basedata$cfDNA_cloneFraction)
+  FW_R2 <- samplecorrelation(patient, "DNA", gDNA_samporder[3], patient, "cfDNA", cfDNA_samporder[2], TIL=(clones=="TIL"), Background=(clones=="Background"))
+  Base_R2 <- samplecorrelation(patient, "DNA", gDNA_samporder[1], patient, "cfDNA", cfDNA_samporder[1], TIL=(clones=="TIL"), Background=(clones=="Background"))
+  #FW_R2 <- rsq(Comparison_FWdata$gDNA_cloneFraction, Comparison_FWdata$cfDNA_cloneFraction)
+  #Base_R2 <- rsq(Comparison_Basedata$gDNA_cloneFraction, Comparison_Basedata$cfDNA_cloneFraction)
   
   # Creting scatter plot with R^2 value on it and assigning appropriate themes and log scale
   p <- ggplot(Comparison_FWdata, aes(x=log10(gDNA_cloneFraction), y=log10(cfDNA_cloneFraction))) + geom_point(aes(size=2,colour=aaSeqCDR3)) + scale_color_manual(values=col)
