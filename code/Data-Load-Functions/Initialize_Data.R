@@ -52,7 +52,7 @@ Initialize <- function(dir_data, timepoint_order){
   # Looping through all patients and timepoints to assign patient and timepoint names as variables pointing to MiXCR output
   for(patient in patient_list){
     patient_samplekeys <- samplekeys[which(paste(samplekeys$Project, samplekeys$Patient_ID, samplekeys$Sample_Cohort, sep="_")==patient),]
-    timepoint_list_unorder <- paste(patient_samplekeys$Timepoint, patient_samplekeys$Sample_Year, patient_samplekeys$Sample_Month, sep="_")
+    timepoint_list_unorder <- patient_samplekeys$Timepoint
     timepoint_list <- timepoint_list_unorder[order(match(patient_samplekeys$Timepoint, timepoint_order))]
     assign(paste0(patient, "_samporder"), timepoint_list, envir = .GlobalEnv)
     patient_mixcr <- MiXCR_output[which(paste0(MiXCR_output$patient, MiXCR_output$cohort)==patient),]
